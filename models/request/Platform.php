@@ -308,4 +308,12 @@ class Platform
     public const URALBIDIN = 'URALBIDIN';
     public const URALBIDIN13 = 'URALBIDIN13';
     public const UTENDER = 'UTENDER';
+
+
+    /**
+     * Человекопонятные названия
+     */
+    public const NAMES = [
+        self::EPGU => 'ЕПГУ',
+    ];
 }

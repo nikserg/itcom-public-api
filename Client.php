@@ -6,6 +6,7 @@ use nikserg\ItcomPublicApi\models\request\CryptoProvider;
 use nikserg\ItcomPublicApi\models\request\LegalForm;
 use nikserg\ItcomPublicApi\models\request\Platform;
 use nikserg\ItcomPublicApi\models\request\Target;
+use nikserg\ItcomPublicApi\models\response\Certificate;
 
 /**
  * API для работы с системой Айтиком
@@ -33,13 +34,29 @@ class Client
     public function __construct(string $bearerToken, string $host = self::HOST_DEV)
     {
         $this->guzzleClient = new \GuzzleHttp\Client([
-            'base_uri' => $host . '/app/index.php/',
+            'base_uri' => $host . '/app/index.php/publicApi/',
             'headers'  => [
                 'Authorization' => 'Bearer ' . $bearerToken,
             ],
         ]);
     }
 
+    /**
+     * Создать или изменить заявку на выпуск сертификата
+     *
+     *
+     * @param array       $platforms
+     * @param int|null    $id
+     * @param string|null $name
+     * @param string      $legalForm
+     * @param string      $target
+     * @param string      $cryptoProvider
+     * @param bool        $embeddedCp
+     * @param bool        $isForeigner
+     * @param bool        $isMep
+     * @return \nikserg\ItcomPublicApi\models\response\Certificate
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
     public function createOrUpdate(
         array $platforms = [Platform::EPGU],
         ?int $id = null,
@@ -50,8 +67,8 @@ class Client
         bool $embeddedCp = false,
         bool $isForeigner = false,
         bool $isMep = false
-    ) {
-        $response = $this->guzzleClient->post(self::URI_CREATE_OR_UPDATE, [
+    ): Certificate {
+        return new Certificate($this->guzzleClient->post(self::URI_CREATE_OR_UPDATE, [
             'json' => [
                 'platforms'      => $platforms,
                 'id'             => $id,
@@ -64,7 +81,8 @@ class Client
                 'isForeigner'    => $isForeigner,
                 'isNewProcess'   => true,
             ],
-        ]);
+        ]));
+
     }
 
 }
