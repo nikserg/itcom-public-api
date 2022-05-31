@@ -4,8 +4,10 @@ namespace nikserg\ItcomPublicApi\models;
 
 /**
  * Модель, чьи параметры можно создать из массива
+ *
+ *
  */
-trait ArrayConstrictable
+trait ArrayConstructable
 {
     public function __construct(array $array)
     {

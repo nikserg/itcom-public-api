@@ -2,8 +2,6 @@
 
 namespace nikserg\ItcomPublicApi\models;
 
-use Psr\Http\Message\ResponseInterface;
-
 /**
  * Ответ от CRM
  *
@@ -11,7 +9,7 @@ use Psr\Http\Message\ResponseInterface;
  */
 abstract class Response
 {
-    use ArrayConstrictable {
+    use ArrayConstructable {
         __construct as protected parent_construct;
     }
 

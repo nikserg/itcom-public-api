@@ -6,7 +6,6 @@ use nikserg\ItcomPublicApi\models\Document;
 use nikserg\ItcomPublicApi\models\Field;
 use nikserg\ItcomPublicApi\models\Response;
 use nikserg\ItcomPublicApi\models\Status;
-use Psr\Http\Message\ResponseInterface;
 
 /**
  * Заявка на выпуск сертификата

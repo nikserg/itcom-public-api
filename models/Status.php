@@ -7,7 +7,7 @@ namespace nikserg\ItcomPublicApi\models;
  */
 class Status
 {
-    use ArrayConstrictable {
+    use ArrayConstructable {
         __construct as protected parent_construct;
     }
 

@@ -9,7 +9,7 @@ namespace nikserg\ItcomPublicApi\models;
  */
 class Document
 {
-    use ArrayConstrictable;
+    use ArrayConstructable;
     /**
      * Идентификатор документа
      *

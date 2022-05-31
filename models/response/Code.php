@@ -2,11 +2,7 @@
 
 namespace nikserg\ItcomPublicApi\models\response;
 
-use nikserg\ItcomPublicApi\models\Document;
-use nikserg\ItcomPublicApi\models\Field;
 use nikserg\ItcomPublicApi\models\Response;
-use nikserg\ItcomPublicApi\models\Status;
-use Psr\Http\Message\ResponseInterface;
 
 /**
  * Информация об ошибке или успешном выполнении

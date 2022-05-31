@@ -9,7 +9,7 @@ namespace nikserg\ItcomPublicApi\models;
  */
 class Field
 {
-    use ArrayConstrictable;
+    use ArrayConstructable;
     /**
      * Идентификатор поля
      *
@@ -48,5 +48,5 @@ class Field
      *
      * @var mixed
      */
-    public $value;
+    public mixed $value;
 }

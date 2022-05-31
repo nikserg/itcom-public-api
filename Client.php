@@ -122,7 +122,7 @@ class Client
      * @param \nikserg\ItcomPublicApi\models\request\FillRequestField[] $fields
      * @return void
      * @throws \nikserg\ItcomPublicApi\exceptions\WrongCodeException
-     * @throws \nikserg\ItcomPublicApi\exceptions\NotFoundException
+     * @throws \nikserg\ItcomPublicApi\exceptions\NotFoundException|\GuzzleHttp\Exception\GuzzleException
      */
     public function fill(int $id, array $fields): void
     {

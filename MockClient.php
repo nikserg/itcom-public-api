@@ -8,7 +8,6 @@ use nikserg\ItcomPublicApi\models\request\LegalForm;
 use nikserg\ItcomPublicApi\models\request\Platform;
 use nikserg\ItcomPublicApi\models\request\Target;
 use nikserg\ItcomPublicApi\models\response\Certificate;
-use nikserg\ItcomPublicApi\models\Status;
 
 /**
  * Клиент для тестирования, без реальных запросов
@@ -41,7 +40,7 @@ class MockClient extends Client
      *
      * @return void
      */
-    private function load()
+    private function load(): void
     {
         if ($this->certificates === null) {
             if (file_exists($this->dbFile())) {
@@ -61,7 +60,7 @@ class MockClient extends Client
      *
      * @return void
      */
-    private function save()
+    private function save(): void
     {
         file_put_contents($this->dbFile(),
             serialize(['certificates' => $this->certificates, 'currentId' => $this->currentId]));
@@ -463,6 +462,10 @@ class MockClient extends Client
         return $this->dummyCertificate($id);
     }
 
+    /**
+     * @throws \nikserg\ItcomPublicApi\exceptions\NotFoundException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
     public function fill(int $id, array $fields): void
     {
         $certificate = $this->view($id);
@@ -487,7 +490,7 @@ class MockClient extends Client
      * @param \nikserg\ItcomPublicApi\models\response\Certificate $certificate
      * @return array
      */
-    private function makeRawData(Certificate $certificate)
+    private function makeRawData(Certificate $certificate): array
     {
         $return = (array)$certificate;
         unset($return["\0*\0rawData"]);
