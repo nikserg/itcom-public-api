@@ -1,0 +1,19 @@
+{
+    "name": "nikserg/itcom-public-api",
+    "description": "Публичный API Айтиком",
+    "keywords": [],
+    "authors": [
+        {
+            "name": "Nikita Zarubin",
+            "email": "nikitadimitrov@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "nikserg\\ItcomPublicApi\\": ""
+        }
+    },
+    "require": {
+        "php": "^7.1 || ^8.0",
+    }
+}
