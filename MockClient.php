@@ -23,11 +23,24 @@ class MockClient extends Client
     private ?array $certificates = null;
     private int $currentId = 1;
 
+    /**
+     * Имя файла локального хранилища, в котором хранятся данные для персистентности между запросами.
+     * Это имитирует БД системы на той стороне API.
+     *
+     *
+     * @return string
+     */
     private function dbFile(): string
     {
         return sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'itcomPublicApiMock';
     }
 
+    /**
+     * Загрузить данные из локального хранилища
+     *
+     *
+     * @return void
+     */
     private function load()
     {
         if ($this->certificates === null) {
@@ -42,6 +55,12 @@ class MockClient extends Client
         }
     }
 
+    /**
+     * Сохранить текущие данные в локальное хранилище
+     *
+     *
+     * @return void
+     */
     private function save()
     {
         file_put_contents($this->dbFile(),
@@ -460,6 +479,14 @@ class MockClient extends Client
         $this->save();
     }
 
+    /**
+     * Создает сырые данные, которые вернулись бы из метода, например,
+     * certificate/view, если бы была запрошена такая заявка
+     *
+     *
+     * @param \nikserg\ItcomPublicApi\models\response\Certificate $certificate
+     * @return array
+     */
     private function makeRawData(Certificate $certificate)
     {
         $return = (array)$certificate;
@@ -471,6 +498,7 @@ class MockClient extends Client
             $field = (array)$field;
         }
         $return['status'] = (array)$return['status'];
+
         return $return;
     }
 }
