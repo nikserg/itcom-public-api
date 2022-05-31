@@ -448,7 +448,7 @@ class MockClient extends Client
     {
         $certificate = $this->view($id);
         foreach ($fields as $field) {
-            foreach ($certificate->fields as $certificateIndex => $certificateField) {
+            foreach ($certificate->fields as $certificateField) {
                 if ($certificateField->id == $field->id) {
                     $certificateField->value = $field->value;
                 }
