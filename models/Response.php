@@ -24,10 +24,9 @@ abstract class Response
         return $responseContent;
     }
 
-    final public function __construct(ResponseInterface $response)
+    final public function __construct(array $array)
     {
-        $responseContent = $this->prepareResponseContent(\GuzzleHttp\Utils::jsonDecode($response->getBody()->getContents(),
-            true));
-        $this->parent_construct($responseContent);
+        $array = $this->prepareResponseContent($array);
+        $this->parent_construct($array);
     }
 }

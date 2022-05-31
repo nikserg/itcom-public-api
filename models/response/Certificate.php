@@ -170,7 +170,7 @@ class Certificate extends Response
         $responseContent['isMinor'] = boolval($responseContent['isMinor'] ?? false);
         $responseContent['isMep'] = boolval($responseContent['isMep'] ?? false);
         $responseContent['isForeignCompany'] = boolval($responseContent['isForeignCompany'] ?? false);
-        $responseContent['noColorScan'] = boolval($responseContent['noColorScan']);
+        $responseContent['noColorScan'] = boolval($responseContent['noColorScan'] ?? false);
         $responseContent['status'] = new Status($responseContent['status']);
 
         foreach ($responseContent['fields'] as $key => $value) {

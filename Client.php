@@ -2,6 +2,7 @@
 
 namespace nikserg\ItcomPublicApi;
 
+use GuzzleHttp\Utils;
 use nikserg\ItcomPublicApi\models\request\CryptoProvider;
 use nikserg\ItcomPublicApi\models\request\LegalForm;
 use nikserg\ItcomPublicApi\models\request\Platform;
@@ -68,7 +69,7 @@ class Client
         bool $isForeigner = false,
         bool $isMep = false
     ): Certificate {
-        return new Certificate($this->guzzleClient->post(self::URI_CREATE_OR_UPDATE, [
+        return new Certificate(Utils::jsonDecode($this->guzzleClient->post(self::URI_CREATE_OR_UPDATE, [
             'json' => [
                 'platforms'      => $platforms,
                 'id'             => $id,
@@ -81,7 +82,7 @@ class Client
                 'isForeigner'    => $isForeigner,
                 'isNewProcess'   => true,
             ],
-        ]));
+        ])->getBody()->getContents(), true));
 
     }
 

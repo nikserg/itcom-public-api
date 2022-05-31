@@ -15,3 +15,8 @@ echo $createdCertificate->id; //ID созданной заявки
 
 $client->createOrUpdate(['EPGU'], $createdCertificate->id, 'new name'); //Обновление заявки
 ```
+
+## Тестирование
+
+Чтобы система не отправляла реальные запросы, можно вместо класса `\nikserg\ItcomPublicApi\Client` использовать
+класс `\nikserg\ItcomPublicApi\MockClient`
