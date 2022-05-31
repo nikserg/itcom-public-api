@@ -18,15 +18,51 @@ use nikserg\ItcomPublicApi\models\Status;
 class MockClient extends Client
 {
     /**
+     * @var Certificate[]
+     */
+    private ?array $certificates = null;
+    private int $currentId = 1;
+
+    private function dbFile(): string
+    {
+        return sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'itcomPublicApiMock';
+    }
+
+    private function load()
+    {
+        if ($this->certificates === null) {
+            if (file_exists($this->dbFile())) {
+                $content = unserialize(file_get_contents($this->dbFile()));
+                $this->certificates = $content['certificates'];
+                $this->currentId = $content['currentId'];
+            } else {
+                $this->certificates = [];
+                $this->save();
+            }
+        }
+    }
+
+    private function save()
+    {
+        file_put_contents($this->dbFile(),
+            serialize(['certificates' => $this->certificates, 'currentId' => $this->currentId]));
+    }
+
+    /**
      * Тестовая информация о сертификате
      *
      *
+     * @param int $id
      * @return \nikserg\ItcomPublicApi\models\response\Certificate
      */
-    private function dummyCertificate(): Certificate
+    private function dummyCertificate(int $id): Certificate
     {
+        $this->load();
+        if (isset($this->certificates[$id])) {
+            return $this->certificates[$id];
+        }
         $json = '{
-    "id": 1,
+    "id": ' . $id . ',
     "platforms": [
         "EPGU"
     ],
@@ -380,7 +416,9 @@ class MockClient extends Client
 }';
         $decoded = Utils::jsonDecode($json, true);
 
-        return new Certificate($decoded);
+        $this->certificates[$id] = new Certificate($decoded);
+
+        return $this->certificates[$id];
     }
 
     public function createOrUpdate(
@@ -394,16 +432,45 @@ class MockClient extends Client
         bool $isForeigner = false,
         bool $isMep = false
     ): Certificate {
-        return $this->dummyCertificate();
+        if (!$id) {
+            $id = $this->currentId++;
+        }
+
+        return $this->dummyCertificate($id);
     }
 
     public function view(int $id): Certificate
     {
-        return $this->dummyCertificate();
+        return $this->dummyCertificate($id);
     }
 
     public function fill(int $id, array $fields): void
     {
-        //
+        $certificate = $this->view($id);
+        foreach ($fields as $field) {
+            foreach ($certificate->fields as $certificateIndex => $certificateField) {
+                if ($certificateField->id == $field->id) {
+                    $certificateField->value = $field->value;
+                }
+            }
+        }
+        $rawData = $this->makeRawData($certificate);
+        $certificate = new Certificate($rawData);
+        $this->certificates[$certificate->id] = $certificate;
+        $this->save();
+    }
+
+    private function makeRawData(Certificate $certificate)
+    {
+        $return = (array)$certificate;
+        unset($return["\0*\0rawData"]);
+        foreach ($return['documents'] as &$document) {
+            $document = (array)$document;
+        }
+        foreach ($return['fields'] as &$field) {
+            $field = (array)$field;
+        }
+        $return['status'] = (array)$return['status'];
+        return $return;
     }
 }
