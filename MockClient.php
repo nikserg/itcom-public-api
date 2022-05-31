@@ -17,17 +17,14 @@ use nikserg\ItcomPublicApi\models\Status;
  */
 class MockClient extends Client
 {
-    public function createOrUpdate(
-        array $platforms = [Platform::EPGU],
-        ?int $id = null,
-        ?string $name = null,
-        string $legalForm = LegalForm::LEGAL,
-        string $target = Target::CONFIDANT,
-        string $cryptoProvider = CryptoProvider::CRYPTO_PRO_2012,
-        bool $embeddedCp = false,
-        bool $isForeigner = false,
-        bool $isMep = false
-    ): Certificate {
+    /**
+     * Тестовая информация о сертификате
+     *
+     *
+     * @return \nikserg\ItcomPublicApi\models\response\Certificate
+     */
+    private function dummyCertificate(): Certificate
+    {
         $json = '{
     "id": 1,
     "platforms": [
@@ -382,6 +379,31 @@ class MockClient extends Client
     "isNewProcess": true
 }';
         $decoded = Utils::jsonDecode($json, true);
+
         return new Certificate($decoded);
+    }
+
+    public function createOrUpdate(
+        array $platforms = [Platform::EPGU],
+        ?int $id = null,
+        ?string $name = null,
+        string $legalForm = LegalForm::LEGAL,
+        string $target = Target::CONFIDANT,
+        string $cryptoProvider = CryptoProvider::CRYPTO_PRO_2012,
+        bool $embeddedCp = false,
+        bool $isForeigner = false,
+        bool $isMep = false
+    ): Certificate {
+        return $this->dummyCertificate();
+    }
+
+    public function view(int $id): Certificate
+    {
+        return $this->dummyCertificate();
+    }
+
+    public function fill(int $id, array $fields): void
+    {
+        //
     }
 }
