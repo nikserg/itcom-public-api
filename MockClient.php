@@ -80,20 +80,20 @@ class MockClient extends Client
             return $this->certificates[$id];
         }
         $json = '{
-    "id": ' . $id . ',
+    "id": '.$id.',
     "platforms": [
         "EPGU"
     ],
     "status": {
-        "code": null,
-        "name": "Анкета не заполнена",
-        "description": "Заявка на сертификат создана, ожидается заполнение анкеты."
+        "code": "7",
+        "name": "Требуется сформировать запрос на выпуск сертификата",
+        "description": ""
     },
     "documents": [
         {
             "id": "union",
             "name": "Заявление на изготовление сертификата ключа проверки электронной подписи",
-            "description": "Оригинал с подписью и печатью, который остается в Удостоверяющем центре.Подпись строго как в паспорте. Факсимиле не допустимо. Печать (при наличии) и подпись должны быть синего цвета.",
+            "description": "Оригинал с подписью, который остается в Удостоверяющем центре.Подпись строго как в паспорте. Факсимиле не допустимо. Печать (при наличии) и подпись должны быть синего цвета.",
             "uploaded": false
         },
         {
@@ -103,14 +103,20 @@ class MockClient extends Client
             "uploaded": false
         },
         {
+            "id": "passportfacephoto",
+            "name": "Фотография владельца сертификата с паспортом и заявлением",
+            "description": "Фотография владельца сертификата c паспортом, раскрытого на странице с фотографией, и заявления на выпуск сертификата, чтобы мы могли удостоверить личность владельца этого паспорта. \nФотография с подписанным заявлением и паспортом должна быть сделана в офисе партнера при идентификации личности и включать: указание текущей даты - табличка с датой, часы с крупным изображением даты, календарь на стене.\nПожалуйста, ознакомьтесь с примером такой фотографии.",
+            "uploaded": false
+        },
+        {
             "id": "passportphoto",
             "name": "Паспорт владельца сертификата (страница с фотографией)",
             "description": "Загружается надлежащим образом удостоверенная копия",
             "uploaded": false
         },
         {
-            "id": "distinctConfidence",
-            "name": "Доверенность от руководителя по выписке о предоставлении прав действовать от имени ЮЛ",
+            "id": "passportregistration",
+            "name": "Паспорт владельца сертификата (страница с актуальной пропиской)",
             "description": "Загружается надлежащим образом удостоверенная копия",
             "uploaded": false
         },
@@ -127,296 +133,205 @@ class MockClient extends Client
             "uploaded": false
         }
     ],
-    "fields": [
-        {
-            "id": "organizationShortName",
-            "name": "Организация",
-            "required": true,
-            "type": "string",
-            "value": null
-        },
-        {
-            "id": "street",
-            "name": "Улица, дом, корпус, офис\/квартира",
-            "required": false,
-            "type": "string",
-            "value": null
-        },
-        {
-            "id": "departmentName",
-            "name": "Отдел",
-            "required": false,
-            "type": "string",
-            "value": "Администрация"
-        },
-        {
-            "id": "ownerPosition",
-            "name": "Должность",
-            "required": false,
-            "type": "string",
-            "value": null
-        },
-        {
+    "fields": {
+        "0": {
             "id": "email",
             "name": "Электронный адрес",
             "required": true,
             "type": "string",
-            "value": null
+            "value": "rh@uc-stolica.ru"
         },
-        {
-            "id": "passportSeries",
-            "name": "Серия",
-            "required": false,
-            "type": "string",
-            "value": null
-        },
-        {
+        "2": {
             "id": "SNILS",
             "name": "СНИЛС",
             "required": true,
             "type": "string",
-            "value": null
+            "value": "14011862813"
         },
-        {
+        "3": {
             "id": "phone",
             "name": "Телефон",
             "required": true,
             "type": "string",
-            "value": null
+            "value": "+70000000000"
         },
-        {
+        "4": {
             "id": "fiasAddress",
-            "name": "Адрес",
+            "name": "Адрес прописки",
             "required": false,
             "type": "string",
             "value": null
         },
-        {
+        "5": {
             "id": "region",
             "name": "Регион",
             "required": false,
             "type": "string",
-            "value": null
+            "value": "16 Республика Татарстан",
+            "group": {
+                "id": "address",
+                "name": "Адрес (населенный пункт\/город согласно прописки)"
+            }
         },
-        {
+        "6": {
             "id": "city",
-            "name": "Город\/населенный пункт",
+            "name": "Город населенный пункт",
             "required": false,
             "type": "string",
-            "value": null
+            "value": "Казань",
+            "group": {
+                "id": "address",
+                "name": "Адрес (населенный пункт\/город согласно прописки)"
+            }
         },
-        {
-            "id": "street",
-            "name": "Улица, дом, корпус, офис\/квартира",
-            "required": false,
-            "type": "string",
-            "value": null
-        },
-        {
+        "7": {
             "id": "passportSeries",
             "name": "Серия",
             "required": false,
             "type": "string",
-            "value": null
+            "value": "9212",
+            "group": {
+                "id": "passport",
+                "name": "Паспорт"
+            }
         },
-        {
+        "8": {
             "id": "passportNumber",
             "name": "Номер",
             "required": true,
             "type": "string",
-            "value": null
+            "value": "328882",
+            "group": {
+                "id": "passport",
+                "name": "Паспорт"
+            }
         },
-        {
+        "9": {
             "id": "passportDate",
             "name": "Дата выдачи",
             "required": true,
             "type": "string",
-            "value": null
+            "value": "15.05.2012",
+            "group": {
+                "id": "passport",
+                "name": "Паспорт"
+            }
         },
-        {
+        "10": {
             "id": "ownerCountry",
             "name": "Страна гражданства",
             "required": true,
             "type": "string",
-            "value": null
+            "value": "RUS",
+            "group": {
+                "id": "passport",
+                "name": "Паспорт"
+            }
         },
-        {
+        "11": {
             "id": "ownerPassportDeptCode",
             "name": "Код подразделения",
             "required": true,
             "type": "string",
-            "value": null
+            "value": "160-009",
+            "group": {
+                "id": "passport",
+                "name": "Паспорт"
+            }
         },
-        {
+        "12": {
             "id": "ownerBirthDate",
             "name": "Дата рождения",
             "required": true,
             "type": "string",
-            "value": null
+            "value": "28.04.1992",
+            "group": {
+                "id": "passport",
+                "name": "Паспорт"
+            }
         },
-        {
+        "13": {
             "id": "ownerBirthPlace",
             "name": "Место рождения",
             "required": true,
             "type": "string",
-            "value": null
+            "value": "гор. Набережные Челны",
+            "group": {
+                "id": "passport",
+                "name": "Паспорт"
+            }
         },
-        {
+        "14": {
             "id": "passportIssuer",
             "name": "Кем выдан",
             "required": true,
             "type": "string",
-            "value": null
+            "value": "УМВД г. Казани",
+            "group": {
+                "id": "passport",
+                "name": "Паспорт"
+            }
         },
-        {
+        "15": {
             "id": "ownerLastName",
             "name": "Фамилия",
             "required": true,
             "type": "string",
-            "value": null
+            "value": "Хайрутдинов",
+            "group": {
+                "id": "ownerName",
+                "name": " "
+            }
         },
-        {
+        "16": {
             "id": "ownerFirstName",
             "name": "Имя",
             "required": true,
             "type": "string",
-            "value": null
+            "value": "Руслан",
+            "group": {
+                "id": "ownerName",
+                "name": " "
+            }
         },
-        {
+        "17": {
             "id": "ownerMiddleName",
             "name": "Отчество",
             "required": false,
             "type": "string",
-            "value": null
+            "value": "Айратович",
+            "group": {
+                "id": "ownerName",
+                "name": " "
+            }
         },
-        {
+        "18": {
             "id": "ownerGender",
             "name": "Пол",
             "required": true,
             "type": "string",
-            "value": null
+            "value": "1",
+            "group": {
+                "id": "ownerName",
+                "name": " "
+            }
         },
-        {
-            "id": "ownerINN",
+        "19": {
+            "id": "INNFL",
             "name": "ИНН",
             "required": true,
             "type": "string",
-            "value": null
-        },
-        {
-            "id": "INN",
-            "name": "ИНН",
-            "required": true,
-            "type": "string",
-            "value": null
-        },
-        {
-            "id": "OGRN",
-            "name": "ОГРН",
-            "required": true,
-            "type": "string",
-            "value": null
-        },
-        {
-            "id": "KPP",
-            "name": "КПП",
-            "required": true,
-            "type": "string",
-            "value": null
-        },
-        {
-            "id": "authorityDocumentType",
-            "name": "Тип документа, подтверждающего полномочия",
-            "required": false,
-            "type": "string",
-            "value": null
-        },
-        {
-            "id": "authorityDocumentNumber",
-            "name": "Номер доверенности",
-            "required": false,
-            "type": "string",
-            "value": null
-        },
-        {
-            "id": "authorityDocumentDate",
-            "name": "Дата доверенности",
-            "required": false,
-            "type": "string",
-            "value": null
-        },
-        {
-            "id": "authorityDocument",
-            "name": "Основание полномочий",
-            "required": false,
-            "type": "string",
-            "value": null
-        },
-        {
-            "id": "ownerINN",
-            "name": "ИНН",
-            "required": true,
-            "type": "string",
-            "value": null
-        },
-        {
-            "id": "employeeTermAuthorityDocument",
-            "name": "Срок действия доверенности",
-            "required": true,
-            "type": "string",
-            "value": null
-        },
-        {
-            "id": "employeeTermAuthorityDocumentDate",
-            "name": "Дата срока действия договора",
-            "required": false,
-            "type": "string",
-            "value": null
-        },
-        {
-            "id": "headLastName",
-            "name": "Фамилия",
-            "required": true,
-            "type": "string",
-            "value": null
-        },
-        {
-            "id": "headFirstName",
-            "name": "Имя",
-            "required": true,
-            "type": "string",
-            "value": null
-        },
-        {
-            "id": "headMiddleName",
-            "name": "Отчество",
-            "required": false,
-            "type": "string",
-            "value": null
-        },
-        {
-            "id": "safeEgrulOwner",
-            "name": "СМЭВ по владельцу успешно проверен",
-            "required": false,
-            "type": "boolean",
-            "value": null
-        },
-        {
-            "id": "headPosition",
-            "name": "Должность",
-            "required": true,
-            "type": "string",
-            "value": null
+            "value": "165125702012"
         }
-    ],
-    "link": "https:\/\/dev.uc-itcom.ru\/app\/index.php\/customerForms\/external?token=1ab6644e6fd3f41ade700cfcd86ab7f0ind",
-    "legalForm": "legal",
-    "target": "confidant",
+    },
+    "link": "https:\/\/crm.uc-itcom.ru\/app\/index.php\/customerForms\/external?token=d82d32c2ad253e45d521d84b757c440cind",
+    "legalForm": "person",
+    "target": "owner",
     "embededCP": "0",
-    "isGKFH": null,
+    "isGKFH": "0",
     "isForeigner": "0",
-    "isMinor": null,
-    "isForeignCompany": null,
+    "isMinor": "0",
+    "isForeignCompany": "0",
     "noColorScan": "0",
     "cryptoProvider": "CRYPTO_PRO_2012",
     "oids": [
@@ -427,7 +342,7 @@ class MockClient extends Client
         "1.2.643.3.296.12",
         "1.2.643.3.296"
     ],
-    "createDate": "2022-05-31 09:22:17",
+    "createDate": "2022-05-24 13:13:09",
     "issueDate": null,
     "isMep": "0",
     "isNewProcess": true
@@ -499,6 +414,9 @@ class MockClient extends Client
         }
         foreach ($return['fields'] as &$field) {
             $field = (array)$field;
+            if (isset($field['group'])) {
+                $field['group'] = (array)$field['group'];
+            }
         }
         $return['status'] = (array)$return['status'];
 
