@@ -111,7 +111,7 @@ class Client
     public function view(int $id): Certificate
     {
         try {
-            return new Certificate(self::jsonDecode( (string)($this->guzzleClient->get(self::URI_VIEW . '?id=' . $id)->getBody()),
+            return new Certificate(self::jsonDecode((string)($this->guzzleClient->get(self::URI_VIEW . '?id=' . $id)->getBody()),
                 true));
         } catch (ClientException $exception) {
             if ($exception->getCode() == 404) {
@@ -124,12 +124,16 @@ class Client
     /**
      * Заполнить анкету заявки на сертификат
      *
-     *
      * @param int                                                       $id
      * @param \nikserg\ItcomPublicApi\models\request\FillRequestField[] $fields
      * @return void
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \nikserg\ItcomPublicApi\exceptions\InvalidJsonException
+     * @throws \nikserg\ItcomPublicApi\exceptions\NotFoundException
+     * @throws \nikserg\ItcomPublicApi\exceptions\PublicApiException
+     * @throws \nikserg\ItcomPublicApi\exceptions\PublicApiMalformedRequestException
+     * @throws \nikserg\ItcomPublicApi\exceptions\PublicApiMalformedRequestValidationException
      * @throws \nikserg\ItcomPublicApi\exceptions\WrongCodeException
-     * @throws \nikserg\ItcomPublicApi\exceptions\NotFoundException|\GuzzleHttp\Exception\GuzzleException
      */
     public function fill(int $id, array $fields): void
     {

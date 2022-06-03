@@ -10,6 +10,8 @@ namespace nikserg\ItcomPublicApi\models;
 class Document
 {
     use ArrayConstructable;
+
+    public const ID_ADDITIONAL = 'additional'; //Прочие (при необходимости)
     /**
      * Идентификатор документа
      *
