@@ -3,8 +3,10 @@
 namespace nikserg\ItcomPublicApi;
 
 use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\Exception\InvalidArgumentException;
 use GuzzleHttp\RequestOptions;
 use GuzzleHttp\Utils;
+use nikserg\ItcomPublicApi\exceptions\InvalidJsonException;
 use nikserg\ItcomPublicApi\exceptions\NotFoundException;
 use nikserg\ItcomPublicApi\exceptions\PublicApiException;
 use nikserg\ItcomPublicApi\exceptions\PublicApiMalformedRequestException;
@@ -81,7 +83,7 @@ class Client
         bool $isForeigner = false,
         bool $isMep = false
     ): Certificate {
-        return new Certificate(Utils::jsonDecode($this->guzzleClient->post(self::URI_CREATE_OR_UPDATE, [
+        return new Certificate(self::jsonDecode((string)($this->guzzleClient->post(self::URI_CREATE_OR_UPDATE, [
             'json' => [
                 'platforms'      => $platforms,
                 'id'             => $id,
@@ -94,7 +96,7 @@ class Client
                 'isForeigner'    => $isForeigner,
                 'isNewProcess'   => true,
             ],
-        ])->getBody()->getContents(), true));
+        ])->getBody()), true));
 
     }
 
@@ -109,7 +111,7 @@ class Client
     public function view(int $id): Certificate
     {
         try {
-            return new Certificate(Utils::jsonDecode($this->guzzleClient->get(self::URI_VIEW . '?id=' . $id)->getBody()->getContents(),
+            return new Certificate(self::jsonDecode( (string)($this->guzzleClient->get(self::URI_VIEW . '?id=' . $id)->getBody()),
                 true));
         } catch (ClientException $exception) {
             if ($exception->getCode() == 404) {
@@ -132,20 +134,40 @@ class Client
     public function fill(int $id, array $fields): void
     {
         try {
-            $responseContent = $this->checkError($this->guzzleClient->post(self::URI_FILL . '?id=' . $id,
+            $response = $this->checkError($this->guzzleClient->post(self::URI_FILL . '?id=' . $id,
                 [
                     'json'        => $fields,
                     'http_errors' => false,
-                ]))->getBody()->getContents();
+                ]));
+            $responseContent = (string)($response->getBody());
         } catch (ClientException $exception) {
             if ($exception->getCode() == 404) {
                 throw new NotFoundException($id);
             }
             throw $exception;
         }
-        $decodedResponseContent = Utils::jsonDecode($responseContent, true);
+        $decodedResponseContent = self::jsonDecode($responseContent, true);
         $responseCode = new Code($decodedResponseContent);
         $this->checkResponseCode($responseCode);
+    }
+
+
+    /**
+     * @param string $json
+     * @param bool   $asAssoc
+     * @return array|bool|float|int|object|string|null
+     * @throws \nikserg\ItcomPublicApi\exceptions\InvalidJsonException
+     */
+    public static function jsonDecode(string $json, bool $asAssoc = false)
+    {
+        if (!$json) {
+            throw new InvalidJsonException('Получена пустая строка, хотя ожидался json');
+        }
+        try {
+            return Utils::jsonDecode($json, $asAssoc);
+        } catch (InvalidArgumentException) {
+            throw new InvalidJsonException($json);
+        }
     }
 
     /**
@@ -155,8 +177,8 @@ class Client
      */
     private function checkError(ResponseInterface $response): ResponseInterface
     {
-        $body = $response->getBody()->getContents();
-        $json = Utils::jsonDecode($body, true);
+        $body = (string)($response->getBody());
+        $json = self::jsonDecode($body, true);
         if (isset($json['error'])) {
             $errorClass = PublicApiException::class;
             switch ($json['error']['type']) {
