@@ -3,8 +3,12 @@
 namespace nikserg\ItcomPublicApi;
 
 use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\RequestOptions;
 use GuzzleHttp\Utils;
 use nikserg\ItcomPublicApi\exceptions\NotFoundException;
+use nikserg\ItcomPublicApi\exceptions\PublicApiException;
+use nikserg\ItcomPublicApi\exceptions\PublicApiMalformedRequestException;
+use nikserg\ItcomPublicApi\exceptions\PublicApiMalformedRequestValidationException;
 use nikserg\ItcomPublicApi\exceptions\WrongCodeException;
 use nikserg\ItcomPublicApi\models\request\CryptoProvider;
 use nikserg\ItcomPublicApi\models\request\LegalForm;
@@ -12,6 +16,7 @@ use nikserg\ItcomPublicApi\models\request\Platform;
 use nikserg\ItcomPublicApi\models\request\Target;
 use nikserg\ItcomPublicApi\models\response\Certificate;
 use nikserg\ItcomPublicApi\models\response\Code;
+use Psr\Http\Message\ResponseInterface;
 
 /**
  * API для работы с системой Айтиком
@@ -127,8 +132,11 @@ class Client
     public function fill(int $id, array $fields): void
     {
         try {
-            $responseContent = $this->guzzleClient->post(self::URI_FILL . '?id=' . $id,
-                ['json' => $fields])->getBody()->getContents();
+            $responseContent = $this->checkError($this->guzzleClient->post(self::URI_FILL . '?id=' . $id,
+                [
+                    'json'        => $fields,
+                    'http_errors' => false,
+                ]))->getBody()->getContents();
         } catch (ClientException $exception) {
             if ($exception->getCode() == 404) {
                 throw new NotFoundException($id);
@@ -138,6 +146,31 @@ class Client
         $decodedResponseContent = Utils::jsonDecode($responseContent, true);
         $responseCode = new Code($decodedResponseContent);
         $this->checkResponseCode($responseCode);
+    }
+
+    /**
+     * @throws \nikserg\ItcomPublicApi\exceptions\PublicApiMalformedRequestException
+     * @throws \nikserg\ItcomPublicApi\exceptions\PublicApiMalformedRequestValidationException
+     * @throws \nikserg\ItcomPublicApi\exceptions\PublicApiException
+     */
+    private function checkError(ResponseInterface $response): ResponseInterface
+    {
+        $body = $response->getBody()->getContents();
+        $json = Utils::jsonDecode($body, true);
+        if (isset($json['error'])) {
+            $errorClass = PublicApiException::class;
+            switch ($json['error']['type']) {
+                case 'PublicApiMalformedRequestException':
+                    $errorClass = PublicApiMalformedRequestException::class;
+                    break;
+                case 'PublicApiMalformedRequestValidationException':
+                    $errorClass = PublicApiMalformedRequestValidationException::class;
+                    break;
+            }
+            throw new $errorClass($json['error']);
+        }
+
+        return $response;
     }
 
     /**
