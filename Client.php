@@ -4,7 +4,6 @@ namespace nikserg\ItcomPublicApi;
 
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\InvalidArgumentException;
-use GuzzleHttp\RequestOptions;
 use GuzzleHttp\Utils;
 use nikserg\ItcomPublicApi\exceptions\InvalidJsonException;
 use nikserg\ItcomPublicApi\exceptions\NotFoundException;
@@ -21,7 +20,8 @@ use nikserg\ItcomPublicApi\models\response\Code;
 use Psr\Http\Message\ResponseInterface;
 
 /**
- * API для работы с системой Айтиком
+ * API для работы с системой Айтиком. Требует bearer-токен и дает доступ ко всем заявкам пользователя,
+ * которому принадлежит этот токен
  *
  * Документация:
  *
@@ -46,6 +46,10 @@ class Client
     private \GuzzleHttp\Client $guzzleClient;
 
 
+    /**
+     * @param string $bearerToken Токен доступа пользователя системы
+     * @param string $host
+     */
     public function __construct(string $bearerToken, string $host = self::HOST_DEV)
     {
         $this->guzzleClient = new \GuzzleHttp\Client([
@@ -71,6 +75,7 @@ class Client
      * @param bool        $isMep
      * @return \nikserg\ItcomPublicApi\models\response\Certificate
      * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \nikserg\ItcomPublicApi\exceptions\InvalidJsonException
      */
     public function createOrUpdate(
         array $platforms = [Platform::EPGU],
@@ -107,12 +112,14 @@ class Client
      * @param int $id
      * @return \nikserg\ItcomPublicApi\models\response\Certificate
      * @throws \nikserg\ItcomPublicApi\exceptions\NotFoundException|\GuzzleHttp\Exception\GuzzleException
+     * @throws \nikserg\ItcomPublicApi\exceptions\InvalidJsonException
      */
     public function view(int $id): Certificate
     {
         try {
             $decodedAnswer = self::jsonDecode((string)($this->guzzleClient->get(self::URI_VIEW . '?id=' . $id)->getBody()),
                 true);
+
             return new Certificate($decodedAnswer);
         } catch (ClientException $exception) {
             if ($exception->getCode() == 404) {
@@ -176,11 +183,15 @@ class Client
     }
 
     /**
+     * Проверить json-ответ от API и выбросить исключения, если в нем есть ошибочный код
+     *
+     *
      * @throws \nikserg\ItcomPublicApi\exceptions\PublicApiMalformedRequestException
      * @throws \nikserg\ItcomPublicApi\exceptions\PublicApiMalformedRequestValidationException
      * @throws \nikserg\ItcomPublicApi\exceptions\PublicApiException
+     * @throws \nikserg\ItcomPublicApi\exceptions\InvalidJsonException
      */
-    private function checkError(ResponseInterface $response): ResponseInterface
+    protected function checkError(ResponseInterface $response): ResponseInterface
     {
         $body = (string)($response->getBody());
         $json = self::jsonDecode($body, true);
