@@ -3,7 +3,7 @@
 namespace nikserg\ItcomPublicApi\exceptions;
 
 
-use JetBrains\PhpStorm\Internal\LanguageLevelTypeAware;
+use Throwable;
 
 /**
  * Осмысленная ошибка от сервера CRM

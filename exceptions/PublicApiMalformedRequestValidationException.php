@@ -2,6 +2,8 @@
 
 namespace nikserg\ItcomPublicApi\exceptions;
 
+use Throwable;
+
 /**
  * Ошибка при валидации анкеты на стороне CRM
  */

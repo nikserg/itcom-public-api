@@ -2,9 +2,9 @@
 
 namespace nikserg\ItcomPublicApi\exceptions;
 
-
-use Throwable;
-
+/**
+ * Не json-строка или ошибка при разборе
+ */
 class InvalidJsonException extends Exception
 {
 }

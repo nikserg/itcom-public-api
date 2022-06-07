@@ -2,6 +2,7 @@
 
 namespace nikserg\ItcomPublicApi;
 
+use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\InvalidArgumentException;
 use GuzzleHttp\Utils;
@@ -20,14 +21,19 @@ use nikserg\ItcomPublicApi\models\response\Code;
 use Psr\Http\Message\ResponseInterface;
 
 /**
- * API для работы с системой Айтиком. Требует bearer-токен и дает доступ ко всем заявкам пользователя,
- * которому принадлежит этот токен
+ * API для работы с системой Айтиком.
+ *
+ * Авторизация одним из двух способов:
+ * - Bearer-токен пользователя, который дает доступ ко всем заявкам пользователя. Например, "123" для суперпользователя
+ * на тестовом сервере.
+ * - Индивидуальный токен заявки, соединенный ее ID, дает доступ только к этой заявке. Например
+ * "1_299d37000a26677fa3049816558a816eind", где 1 - ID заявки, 299d37000a26677fa3049816558a816eind - токен доступа.
  *
  * Документация:
  *
  * @see https://app.swaggerhub.com/apis/nikserg/crm-certificate-api/1.0.16
  */
-class Client
+abstract class BaseClient
 {
     //
     // Хосты систем
@@ -43,7 +49,7 @@ class Client
     private const URI_FILL = 'certificate/fill';
     private const URI_VIEW = 'certificate/view';
 
-    private \GuzzleHttp\Client $guzzleClient;
+    protected Client $guzzleClient;
 
 
     /**
@@ -52,7 +58,7 @@ class Client
      */
     public function __construct(string $bearerToken, string $host = self::HOST_DEV)
     {
-        $this->guzzleClient = new \GuzzleHttp\Client([
+        $this->guzzleClient = new Client([
             'base_uri' => $host . '/app/index.php/publicApi/',
             'headers'  => [
                 'Authorization' => 'Bearer ' . $bearerToken,
@@ -61,7 +67,7 @@ class Client
     }
 
     /**
-     * Создать или изменить заявку на выпуск сертификата
+     * Создать или изменить заявку на выпуск сертификата.
      *
      *
      * @param array       $platforms
@@ -77,7 +83,7 @@ class Client
      * @throws \GuzzleHttp\Exception\GuzzleException
      * @throws \nikserg\ItcomPublicApi\exceptions\InvalidJsonException
      */
-    public function createOrUpdate(
+    protected function baseCreateOrUpdate(
         array $platforms = [Platform::EPGU],
         ?int $id = null,
         ?string $name = null,
@@ -114,7 +120,7 @@ class Client
      * @throws \nikserg\ItcomPublicApi\exceptions\NotFoundException|\GuzzleHttp\Exception\GuzzleException
      * @throws \nikserg\ItcomPublicApi\exceptions\InvalidJsonException
      */
-    public function view(int $id): Certificate
+    protected function baseView(int $id): Certificate
     {
         try {
             $decodedAnswer = self::jsonDecode((string)($this->guzzleClient->get(self::URI_VIEW . '?id=' . $id)->getBody()),
@@ -143,7 +149,7 @@ class Client
      * @throws \nikserg\ItcomPublicApi\exceptions\PublicApiMalformedRequestValidationException
      * @throws \nikserg\ItcomPublicApi\exceptions\WrongCodeException
      */
-    public function fill(int $id, array $fields): void
+    protected function baseFill(int $id, array $fields): void
     {
         try {
             $response = $this->checkError($this->guzzleClient->post(self::URI_FILL . '?id=' . $id,
@@ -170,7 +176,7 @@ class Client
      * @return array|bool|float|int|object|string|null
      * @throws \nikserg\ItcomPublicApi\exceptions\InvalidJsonException
      */
-    public static function jsonDecode(string $json, bool $asAssoc = false)
+    protected static function jsonDecode(string $json, bool $asAssoc = false)
     {
         if (!$json) {
             throw new InvalidJsonException('Получена пустая строка, хотя ожидался json');

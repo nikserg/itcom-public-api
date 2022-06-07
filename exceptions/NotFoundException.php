@@ -5,6 +5,9 @@ namespace nikserg\ItcomPublicApi\exceptions;
 
 use Throwable;
 
+/**
+ * Сущность (обычно заявка) не найдена в CRM, к которой обращаемся
+ */
 class NotFoundException extends Exception
 {
     public int $id;

@@ -5,7 +5,8 @@ namespace nikserg\ItcomPublicApi\models\response;
 use nikserg\ItcomPublicApi\models\Response;
 
 /**
- * Информация об ошибке или успешном выполнении
+ * Простой ответ от CRM, который не предполагает возврата каких-либо данных.
+ * Информация об ошибке или успешном выполнении.
  */
 class Code extends Response
 {

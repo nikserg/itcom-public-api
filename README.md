@@ -8,8 +8,18 @@
 
 ## Использование
 
+В API есть два режима авторизации:
+
+- Как пользователь, с использованием bearer-токена пользователя. В таком случае API имеет доступ ко всем заявкам, к
+  которым имеет доступ пользователь.
+- Для доступа только к одной заявке, с использованием ее ID и токена доступа. В таком случае, создание новых заявок
+  будет недоступно, и доступ будет только к одной заявке.
+
+Для первого режима используется класс `UserClient`, для второго - `IndividualRequestClient`.
+
+Пример использования с авторизацией как пользователь:
 ```php
-$client = new \nikserg\ItcomPublicApi\Client('<bearer token>');
+$client = new \nikserg\ItcomPublicApi\BaseClient('<bearer token>');
 $createdCertificate = $client->createOrUpdate(['EPGU']);
 echo $createdCertificate->id; //ID созданной заявки
 
@@ -18,5 +28,7 @@ $client->createOrUpdate(['EPGU'], $createdCertificate->id, 'new name'); //Обн
 
 ## Тестирование
 
-Чтобы система не отправляла реальные запросы, можно вместо класса `\nikserg\ItcomPublicApi\Client` использовать
-класс `\nikserg\ItcomPublicApi\MockClient`
+Чтобы система не отправляла реальные запросы, можно вместо класса `\nikserg\ItcomPublicApi\UserClient` использовать
+класс `\nikserg\ItcomPublicApi\MockUserClient`.
+
+@todo Сделать аналогичное для `IndividualRequestClient`.

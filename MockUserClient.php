@@ -3,6 +3,7 @@
 namespace nikserg\ItcomPublicApi;
 
 use GuzzleHttp\Utils;
+use http\Client;
 use nikserg\ItcomPublicApi\models\request\CryptoProvider;
 use nikserg\ItcomPublicApi\models\request\LegalForm;
 use nikserg\ItcomPublicApi\models\request\Platform;
@@ -11,10 +12,11 @@ use nikserg\ItcomPublicApi\models\response\Certificate;
 
 /**
  * Клиент для тестирования, без реальных запросов
+ * Авторизация как пользователь
  *
  *
  */
-class MockClient extends Client
+class MockUserClient extends UserClient
 {
     /**
      * @var Certificate[]
