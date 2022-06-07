@@ -130,6 +130,12 @@ class Certificate extends Response
      * @var bool
      */
     public bool $isMep;
+    /**
+     * Новый процесс выпуска сертификатов
+     *
+     * @var bool
+     */
+    public bool $isNewProcess;
 
     /**
      * Криптопровайдер, который используется при генерации подписи
@@ -171,6 +177,8 @@ class Certificate extends Response
         $responseContent['isForeignCompany'] = boolval($responseContent['isForeignCompany'] ?? false);
         $responseContent['noColorScan'] = boolval($responseContent['noColorScan'] ?? false);
         $responseContent['status'] = new Status($responseContent['status']);
+        $responseContent['isForeigner'] = boolval($responseContent['isForeigner'] ?? false);
+        $responseContent['isNewProcess'] = boolval($responseContent['isNewProcess'] ?? false);
 
         foreach ($responseContent['fields'] as $key => $value) {
             $responseContent['fields'][$key] = new Field($value);
@@ -180,5 +188,19 @@ class Certificate extends Response
         }
 
         return $responseContent;
+    }
+
+    /**
+     * Получить токен доступа для заявки
+     *
+     *
+     * @return string
+     */
+    public function getToken(): string
+    {
+        $matches = [];
+        preg_match('/token=(.+)/', $this->link, $matches);
+
+        return $matches[1] ?? '';
     }
 }

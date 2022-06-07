@@ -111,8 +111,9 @@ class Client
     public function view(int $id): Certificate
     {
         try {
-            return new Certificate(self::jsonDecode((string)($this->guzzleClient->get(self::URI_VIEW . '?id=' . $id)->getBody()),
-                true));
+            $decodedAnswer = self::jsonDecode((string)($this->guzzleClient->get(self::URI_VIEW . '?id=' . $id)->getBody()),
+                true);
+            return new Certificate($decodedAnswer);
         } catch (ClientException $exception) {
             if ($exception->getCode() == 404) {
                 throw new NotFoundException($id);
