@@ -203,4 +203,15 @@ class Certificate extends Response
 
         return $matches[1] ?? '';
     }
+
+    /**
+     * Объединенный токен, вида 1_299d37000a26677fa3049816558a816eind
+     *
+     *
+     * @return string
+     */
+    public function getCombinedToken(): string
+    {
+        return $this->id . '_' . $this->getToken();
+    }
 }
