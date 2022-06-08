@@ -9,6 +9,9 @@ use Throwable;
  */
 class PublicApiMalformedRequestValidationException extends PublicApiMalformedRequestException
 {
+    /**
+     * @var string[][]
+     */
     public array $validationErrors = [];
 
     public function __construct(array $json, ?Throwable $previous = null)
