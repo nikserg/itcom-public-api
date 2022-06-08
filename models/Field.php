@@ -39,6 +39,7 @@ class Field
     public const ID_ownerGender = 'ownerGender';
     public const ID_ownerINN = 'ownerINN';
     public const ID_INN = 'INN';
+    public const ID_INNFL = 'INNFL';
     public const ID_OGRN = 'OGRN';
     public const ID_KPP = 'KPP';
     public const ID_authorityDocumentType = 'authorityDocumentType';
@@ -55,6 +56,11 @@ class Field
 
     public const VALUE_GENDER_MALE = 1;
     public const VALUE_GENDER_FEMALE = 2;
+
+    public const GENDER_NAMES = [
+        self::VALUE_GENDER_MALE   => 'Мужской',
+        self::VALUE_GENDER_FEMALE => 'Женский',
+    ];
     /**
      * Идентификатор поля
      *
