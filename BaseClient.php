@@ -48,6 +48,7 @@ abstract class BaseClient
     private const URI_CREATE_OR_UPDATE = 'certificate/createOrUpdate';
     private const URI_FILL = 'certificate/fill';
     private const URI_VIEW = 'certificate/view';
+    private const URI_BLANK = 'certificate/blank';
 
     protected Client $guzzleClient;
 
@@ -64,6 +65,21 @@ abstract class BaseClient
                 'Authorization' => 'Bearer ' . $bearerToken,
             ],
         ]);
+    }
+
+    /**
+     * Скачать бланк сертификата
+     *
+     *
+     * @see \nikserg\ItcomPublicApi\models\request\Blank
+     * @param int    $id
+     * @param string $documentId
+     * @return string
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    protected function baseBlank(int $id, string $documentId): string
+    {
+        return $this->guzzleClient->get(self::URI_BLANK . '?id=' . $id . '&document=' . $documentId)->getBody()->getContents();
     }
 
     /**

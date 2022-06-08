@@ -16,9 +16,6 @@ class UserClient extends BaseClient
 {
 
     /**
-     * Для пользователя доступно как редактирование своих, так и создание новых заявок
-     *
-     *
      * @see \nikserg\ItcomPublicApi\BaseClient::baseCreateOrUpdate()
      */
     public function createOrUpdate(
@@ -37,9 +34,6 @@ class UserClient extends BaseClient
     }
 
     /**
-     * Для пользователя доступно заполнение любой из своих заявок
-     *
-     *
      * @see \nikserg\ItcomPublicApi\BaseClient::baseFill()
      */
     public function fill(int $id, array $fields): void
@@ -48,12 +42,18 @@ class UserClient extends BaseClient
     }
 
     /**
-     * Для пользователя доступен просмотр любой из своих заявок
-     *
      * @see \nikserg\ItcomPublicApi\BaseClient::baseView()
      */
     public function view(int $id): Certificate
     {
         return parent::baseView($id);
+    }
+
+    /**
+     * @see \nikserg\ItcomPublicApi\BaseClient::baseBlank()
+     */
+    public function blank(int $id, string $documentId): string
+    {
+        return parent::baseBlank($id, $documentId);
     }
 }

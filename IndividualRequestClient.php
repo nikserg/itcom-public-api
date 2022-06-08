@@ -128,7 +128,7 @@ class IndividualRequestClient extends BaseClient
     }
 
     /**
-     * По индивидуальной ссылке доступен просмотр только одной заявки
+     * По индивидуальной ссылке доступно заполнение только одной заявки
      *
      *
      * @see \nikserg\ItcomPublicApi\BaseClient::baseView()
@@ -136,5 +136,17 @@ class IndividualRequestClient extends BaseClient
     public function fill(array $fields): void
     {
         parent::baseFill($this->getRequestId(), $fields);
+    }
+
+    /**
+     * Скачивание бланков по своей заявке
+     *
+     *
+     * @param string $documentId
+     * @return string
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function blank(string $documentId): string {
+        return parent::baseBlank($this->getRequestId(), $documentId);
     }
 }
