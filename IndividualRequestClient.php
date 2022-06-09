@@ -139,15 +139,21 @@ class IndividualRequestClient extends BaseClient
     }
 
     /**
-     * Скачивание бланков по своей заявке
+     * Скачивание бланков только по своей заявке
      *
-     *
-     * @param string $documentId
-     * @param string $format
-     * @return string
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * 
+     * @see \nikserg\ItcomPublicApi\BaseClient::baseBlank()
      */
-    public function blank(string $documentId, string $format = 'pdf'): string {
-        return parent::baseBlank($this->getRequestId(), $documentId, $format);
+    public function blank(string $blankId, string $format = 'pdf'): string
+    {
+        return parent::baseBlank($this->getRequestId(), $blankId, $format);
+    }
+
+    /**
+     * @see \nikserg\ItcomPublicApi\BaseClient::baseUpload()
+     */
+    public function upload(string $documentId, string $binaryDocumentContent): void
+    {
+        parent::baseUpload($this->getRequestId(), $documentId, $binaryDocumentContent);
     }
 }

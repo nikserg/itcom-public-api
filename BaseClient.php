@@ -5,6 +5,7 @@ namespace nikserg\ItcomPublicApi;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\InvalidArgumentException;
+use GuzzleHttp\Psr7\Uri;
 use GuzzleHttp\Utils;
 use nikserg\ItcomPublicApi\exceptions\InvalidJsonException;
 use nikserg\ItcomPublicApi\exceptions\NotFoundException;
@@ -49,6 +50,7 @@ abstract class BaseClient
     private const URI_FILL = 'certificate/fill';
     private const URI_VIEW = 'certificate/view';
     private const URI_BLANK = 'certificate/blank';
+    private const URI_UPLOAD = 'certificate/upload';
 
     protected Client $guzzleClient;
 
@@ -67,20 +69,61 @@ abstract class BaseClient
         ]);
     }
 
+
+    /**
+     * Загрузка скана документа
+     *
+     *
+     * @param int    $id
+     * @param string $documentId
+     * @param string $binaryDocumentContent
+     * @return void
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \nikserg\ItcomPublicApi\exceptions\InvalidJsonException
+     * @throws \nikserg\ItcomPublicApi\exceptions\NotFoundException
+     * @throws \nikserg\ItcomPublicApi\exceptions\PublicApiException
+     * @throws \nikserg\ItcomPublicApi\exceptions\PublicApiMalformedRequestException
+     * @throws \nikserg\ItcomPublicApi\exceptions\PublicApiMalformedRequestValidationException
+     * @throws \nikserg\ItcomPublicApi\exceptions\WrongCodeException
+     */
+    protected function baseUpload(int $id, string $documentId, string $binaryDocumentContent): void
+    {
+        try {
+            $response = $this->checkError($this->guzzleClient->post(self::URI_UPLOAD . '?id=' . $id . '&document=' . $documentId,
+                [
+                    'multipart' => [
+                        [
+                            'name'     => 'file',
+                            'contents' => $binaryDocumentContent,
+                        ],
+                    ],
+                ]));
+            $responseContent = (string)($response->getBody());
+        } catch (ClientException $exception) {
+            if ($exception->getCode() == 404) {
+                throw new NotFoundException($id);
+            }
+            throw $exception;
+        }
+        $decodedResponseContent = self::jsonDecode($responseContent, true);
+        $responseCode = new Code($decodedResponseContent);
+        $this->checkResponseCode($responseCode);
+    }
+
     /**
      * Скачать бланк сертификата
      *
      *
      * @param int    $id
-     * @param string $documentId
+     * @param string $blankId
      * @param string $format pdf/html
      * @return string
      * @throws \GuzzleHttp\Exception\GuzzleException
      * @see \nikserg\ItcomPublicApi\models\request\Blank
      */
-    protected function baseBlank(int $id, string $documentId, string $format = 'pdf'): string
+    protected function baseBlank(int $id, string $blankId, string $format = 'pdf'): string
     {
-        return $this->guzzleClient->get(self::URI_BLANK . '?id=' . $id . '&document=' . $documentId.'&format='.$format)->getBody()->getContents();
+        return $this->guzzleClient->get(self::URI_BLANK . '?id=' . $id . '&document=' . $blankId . '&format=' . $format)->getBody()->getContents();
     }
 
     /**
