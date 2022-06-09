@@ -5,6 +5,7 @@ namespace nikserg\ItcomPublicApi;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\InvalidArgumentException;
+use GuzzleHttp\Exception\ServerException;
 use GuzzleHttp\Psr7\Uri;
 use GuzzleHttp\Utils;
 use nikserg\ItcomPublicApi\exceptions\InvalidJsonException;
@@ -62,6 +63,7 @@ abstract class BaseClient
     public function __construct(string $bearerToken, string $host = self::HOST_DEV)
     {
         $this->guzzleClient = new Client([
+            //'debug'    => 1,
             'base_uri' => $host . '/app/index.php/publicApi/',
             'headers'  => [
                 'Authorization' => 'Bearer ' . $bearerToken,
@@ -89,21 +91,28 @@ abstract class BaseClient
     protected function baseUpload(int $id, string $documentId, string $binaryDocumentContent): void
     {
         try {
-            $response = $this->checkError($this->guzzleClient->post(self::URI_UPLOAD . '?id=' . $id . '&document=' . $documentId,
-                [
-                    'multipart' => [
-                        [
-                            'name'     => 'file',
-                            'contents' => $binaryDocumentContent,
-                        ],
+            $response = $this->checkError($this->guzzleClient->request('POST', self::URI_UPLOAD, [
+                'query'     => [
+                    'id'       => $id,
+                    'document' => $documentId,
+                ],
+                'multipart' => [
+                    [
+                        'name'     => 'file',
+                        'contents' => $binaryDocumentContent,
+                        'filename' => 'file',
                     ],
-                ]));
+                ],
+            ]));
             $responseContent = (string)($response->getBody());
         } catch (ClientException $exception) {
             if ($exception->getCode() == 404) {
                 throw new NotFoundException($id);
             }
             throw $exception;
+        } catch (ServerException $exception) {
+            throw new ServerException((string)($exception->getResponse()->getBody()), $exception->getRequest(),
+                $exception->getResponse());
         }
         $decodedResponseContent = self::jsonDecode($responseContent, true);
         $responseCode = new Code($decodedResponseContent);
