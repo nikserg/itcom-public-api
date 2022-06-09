@@ -143,10 +143,11 @@ class IndividualRequestClient extends BaseClient
      *
      *
      * @param string $documentId
+     * @param string $format
      * @return string
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function blank(string $documentId): string {
-        return parent::baseBlank($this->getRequestId(), $documentId);
+    public function blank(string $documentId, string $format = 'pdf'): string {
+        return parent::baseBlank($this->getRequestId(), $documentId, $format);
     }
 }

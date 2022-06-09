@@ -52,8 +52,8 @@ class UserClient extends BaseClient
     /**
      * @see \nikserg\ItcomPublicApi\BaseClient::baseBlank()
      */
-    public function blank(int $id, string $documentId): string
+    public function blank(int $id, string $documentId, string $format = 'pdf'): string
     {
-        return parent::baseBlank($id, $documentId);
+        return parent::baseBlank($id, $documentId, $format);
     }
 }

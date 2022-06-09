@@ -71,15 +71,16 @@ abstract class BaseClient
      * Скачать бланк сертификата
      *
      *
-     * @see \nikserg\ItcomPublicApi\models\request\Blank
      * @param int    $id
      * @param string $documentId
+     * @param string $format pdf/html
      * @return string
      * @throws \GuzzleHttp\Exception\GuzzleException
+     * @see \nikserg\ItcomPublicApi\models\request\Blank
      */
-    protected function baseBlank(int $id, string $documentId): string
+    protected function baseBlank(int $id, string $documentId, string $format = 'pdf'): string
     {
-        return $this->guzzleClient->get(self::URI_BLANK . '?id=' . $id . '&document=' . $documentId)->getBody()->getContents();
+        return $this->guzzleClient->get(self::URI_BLANK . '?id=' . $id . '&document=' . $documentId.'&format='.$format)->getBody()->getContents();
     }
 
     /**
