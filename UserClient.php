@@ -64,4 +64,11 @@ class UserClient extends BaseClient
     {
         parent::baseUpload($id, $documentId, $binaryDocumentContent);
     }
+
+    /**
+     * @see \nikserg\ItcomPublicApi\BaseClient::baseDocument()
+     */
+    public function document(int $id, string $documentId): string {
+        return parent::baseDocument($id, $documentId);
+    }
 }

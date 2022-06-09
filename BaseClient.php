@@ -52,6 +52,7 @@ abstract class BaseClient
     private const URI_VIEW = 'certificate/view';
     private const URI_BLANK = 'certificate/blank';
     private const URI_UPLOAD = 'certificate/upload';
+    private const URI_DOCUMENT = 'certificate/document';
 
     protected Client $guzzleClient;
 
@@ -132,7 +133,13 @@ abstract class BaseClient
      */
     protected function baseBlank(int $id, string $blankId, string $format = 'pdf'): string
     {
-        return $this->guzzleClient->get(self::URI_BLANK . '?id=' . $id . '&document=' . $blankId . '&format=' . $format)->getBody()->getContents();
+        return $this->guzzleClient->get(self::URI_BLANK, [
+            'query' => [
+                'id'       => $id,
+                'document' => $blankId,
+                'format'   => $format,
+            ],
+        ])->getBody()->getContents();
     }
 
     /**
@@ -181,6 +188,34 @@ abstract class BaseClient
     }
 
     /**
+     * Скачать ранее загруженный документ
+     *
+     *
+     * @param int    $id
+     * @param string $documentId
+     * @return string
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \nikserg\ItcomPublicApi\exceptions\NotFoundException
+     */
+    protected function baseDocument(int $id, string $documentId): string
+    {
+        try {
+            return (string)($this->guzzleClient->get(self::URI_DOCUMENT, [
+                'query' => [
+                    'id'       => $id,
+                    'document' => $documentId,
+                ],
+            ])->getBody());
+
+        } catch (ClientException $exception) {
+            if ($exception->getCode() == 404) {
+                throw new NotFoundException($id);
+            }
+            throw $exception;
+        }
+    }
+
+    /**
      * Получить данные о заявке на сертификат
      *
      *
@@ -192,7 +227,11 @@ abstract class BaseClient
     protected function baseView(int $id): Certificate
     {
         try {
-            $decodedAnswer = self::jsonDecode((string)($this->guzzleClient->get(self::URI_VIEW . '?id=' . $id)->getBody()),
+            $decodedAnswer = self::jsonDecode((string)($this->guzzleClient->get(self::URI_VIEW, [
+                'query' => [
+                    'id' => $id,
+                ],
+            ])->getBody()),
                 true);
 
             return new Certificate($decodedAnswer);
@@ -221,8 +260,11 @@ abstract class BaseClient
     protected function baseFill(int $id, array $fields): void
     {
         try {
-            $response = $this->checkError($this->guzzleClient->post(self::URI_FILL . '?id=' . $id,
+            $response = $this->checkError($this->guzzleClient->post(self::URI_FILL,
                 [
+                    'query' => [
+                        'id' => $id,
+                    ],
                     'json'        => $fields,
                     'http_errors' => false,
                 ]));

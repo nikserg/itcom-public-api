@@ -141,7 +141,7 @@ class IndividualRequestClient extends BaseClient
     /**
      * Скачивание бланков только по своей заявке
      *
-     * 
+     *
      * @see \nikserg\ItcomPublicApi\BaseClient::baseBlank()
      */
     public function blank(string $blankId, string $format = 'pdf'): string
@@ -155,5 +155,13 @@ class IndividualRequestClient extends BaseClient
     public function upload(string $documentId, string $binaryDocumentContent): void
     {
         parent::baseUpload($this->getRequestId(), $documentId, $binaryDocumentContent);
+    }
+
+    /**
+     * @see \nikserg\ItcomPublicApi\BaseClient::baseDocument()
+     */
+    public function document(string $documentId): string
+    {
+        return parent::baseDocument($this->requestId, $documentId);
     }
 }
