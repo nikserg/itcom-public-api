@@ -96,6 +96,7 @@ class RequestData extends Response
     public string $subjectSignTool;
     public Enrolment $enrolment;
     public string $certificateTemplate;
+    public bool $isCloud;
 
     protected function prepareResponseContent(array $responseContent): array
     {
