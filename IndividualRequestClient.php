@@ -7,6 +7,7 @@ use nikserg\ItcomPublicApi\models\request\LegalForm;
 use nikserg\ItcomPublicApi\models\request\Platform;
 use nikserg\ItcomPublicApi\models\request\Target;
 use nikserg\ItcomPublicApi\models\response\Certificate;
+use nikserg\ItcomPublicApi\models\response\RequestData;
 
 /**
  * Авторизация через индивидуальный токен заявки вида 1_299d37000a26677fa3049816558a816eind, где
@@ -163,5 +164,13 @@ class IndividualRequestClient extends BaseClient
     public function document(string $documentId): string
     {
         return parent::baseDocument($this->requestId, $documentId);
+    }
+
+    /**
+     * @see \nikserg\ItcomPublicApi\BaseClient::baseRequestData()
+     */
+    public function requestData(): RequestData
+    {
+        return parent::baseRequestData($this->requestId);
     }
 }

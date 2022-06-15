@@ -8,7 +8,7 @@ use nikserg\ItcomPublicApi\models\Response;
 use nikserg\ItcomPublicApi\models\Status;
 
 /**
- * Заявка на выпуск сертификата
+ * Данные о заявке на выпуск сертификата
  */
 class Certificate extends Response
 {

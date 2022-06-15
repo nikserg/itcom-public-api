@@ -7,6 +7,7 @@ use nikserg\ItcomPublicApi\models\request\LegalForm;
 use nikserg\ItcomPublicApi\models\request\Platform;
 use nikserg\ItcomPublicApi\models\request\Target;
 use nikserg\ItcomPublicApi\models\response\Certificate;
+use nikserg\ItcomPublicApi\models\response\RequestData;
 
 /**
  * Авторизация через bearer-токен пользователя
@@ -70,5 +71,12 @@ class UserClient extends BaseClient
      */
     public function document(int $id, string $documentId): string {
         return parent::baseDocument($id, $documentId);
+    }
+
+    /**
+     * @see \nikserg\ItcomPublicApi\BaseClient::baseRequestData()
+     */
+    public function requestData(int $id): RequestData {
+        return parent::baseRequestData($id);
     }
 }

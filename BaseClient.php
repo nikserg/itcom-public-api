@@ -20,6 +20,7 @@ use nikserg\ItcomPublicApi\models\request\Platform;
 use nikserg\ItcomPublicApi\models\request\Target;
 use nikserg\ItcomPublicApi\models\response\Certificate;
 use nikserg\ItcomPublicApi\models\response\Code;
+use nikserg\ItcomPublicApi\models\response\RequestData;
 use Psr\Http\Message\ResponseInterface;
 
 /**
@@ -47,12 +48,13 @@ abstract class BaseClient
     //
     // Адреса внутри системы
     //
-    private const URI_CREATE_OR_UPDATE = 'certificate/createOrUpdate';
-    private const URI_FILL = 'certificate/fill';
-    private const URI_VIEW = 'certificate/view';
-    private const URI_BLANK = 'certificate/blank';
-    private const URI_UPLOAD = 'certificate/upload';
-    private const URI_DOCUMENT = 'certificate/document';
+    private const URI_CREATE_OR_UPDATE = 'certificate/createOrUpdate'; //Создать или изменить заявку на выпуск сертификата
+    private const URI_FILL = 'certificate/fill'; //Заполнить анкетные данные
+    private const URI_VIEW = 'certificate/view'; //Посмотреть данные о сертификате
+    private const URI_BLANK = 'certificate/blank'; //Скачать бланки для выпуска сертификата
+    private const URI_UPLOAD = 'certificate/upload'; //Загрузить сканы документов
+    private const URI_DOCUMENT = 'certificate/document'; //Скачать ранее загруженный скан документа
+    private const URI_REQUEST_DATA = 'certificate/requestData'; //Данные для формирования req-файла
 
     protected Client $guzzleClient;
 
@@ -262,7 +264,7 @@ abstract class BaseClient
         try {
             $response = $this->checkError($this->guzzleClient->post(self::URI_FILL,
                 [
-                    'query' => [
+                    'query'       => [
                         'id' => $id,
                     ],
                     'json'        => $fields,
@@ -278,6 +280,35 @@ abstract class BaseClient
         $decodedResponseContent = self::jsonDecode($responseContent, true);
         $responseCode = new Code($decodedResponseContent);
         $this->checkResponseCode($responseCode);
+    }
+
+    /**
+     * Получить данные для формирования req-файла
+     *
+     *
+     * @param int $id
+     * @return \nikserg\ItcomPublicApi\models\response\RequestData
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \nikserg\ItcomPublicApi\exceptions\InvalidJsonException
+     * @throws \nikserg\ItcomPublicApi\exceptions\NotFoundException
+     */
+    protected function baseRequestData(int $id): RequestData
+    {
+        try {
+            $decodedAnswer = self::jsonDecode((string)($this->guzzleClient->get(self::URI_REQUEST_DATA, [
+                'query' => [
+                    'id' => $id,
+                ],
+            ])->getBody()),
+                true);
+
+            return new RequestData($decodedAnswer);
+        } catch (ClientException $exception) {
+            if ($exception->getCode() == 404) {
+                throw new NotFoundException($id);
+            }
+            throw $exception;
+        }
     }
 
 
