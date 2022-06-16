@@ -1,6 +1,7 @@
 <?php
 
 namespace nikserg\ItcomPublicApi\models\response;
+
 use nikserg\ItcomPublicApi\models\Document;
 use nikserg\ItcomPublicApi\models\Field;
 use nikserg\ItcomPublicApi\models\Response;
@@ -81,6 +82,22 @@ class RequestData extends Response
     }
 */
     /**
+     * @var int
+     */
+    public int $customerFormId;
+    /**
+     * @var string
+     */
+    public string $cryptoProvider;
+    /**
+     * @var int
+     */
+    public int $uc;
+    /**
+     * @var bool
+     */
+    public bool $exportableKey;
+    /**
      * @var \nikserg\ItcomPublicApi\models\response\SubjectField[]
      */
     public array $subjectFields;
@@ -88,14 +105,31 @@ class RequestData extends Response
      * @var \nikserg\ItcomPublicApi\models\response\KeyUsage
      */
     public KeyUsage $keyUsage;
+
     /**
      * @var string[]
      */
     public array $extensionOIDs;
+
+    /**
+     * @var int
+     */
     public int $identificationKind;
+    /**
+     * @var string
+     */
     public string $subjectSignTool;
+    /**
+     * @var \nikserg\ItcomPublicApi\models\response\Enrolment
+     */
     public Enrolment $enrolment;
+    /**
+     * @var string
+     */
     public string $certificateTemplate;
+    /**
+     * @var bool
+     */
     public bool $isCloud;
 
     protected function prepareResponseContent(array $responseContent): array
