@@ -58,6 +58,7 @@ class UserClient extends BaseClient
     {
         return parent::baseBlank($id, $blankId, $format);
     }
+
     /**
      * @see \nikserg\ItcomPublicApi\BaseClient::baseUpload()
      */
@@ -69,14 +70,25 @@ class UserClient extends BaseClient
     /**
      * @see \nikserg\ItcomPublicApi\BaseClient::baseDocument()
      */
-    public function document(int $id, string $documentId): string {
+    public function document(int $id, string $documentId): string
+    {
         return parent::baseDocument($id, $documentId);
     }
 
     /**
      * @see \nikserg\ItcomPublicApi\BaseClient::baseRequestData()
      */
-    public function requestData(int $id): RequestData {
+    public function requestData(int $id): RequestData
+    {
         return parent::baseRequestData($id);
+    }
+
+
+    /**
+     * @see \nikserg\ItcomPublicApi\BaseClient::baseRequest()
+     */
+    public function request(int $id, string $content, string $containerInfo): void
+    {
+        parent::baseRequest($id, $content, $containerInfo);
     }
 }

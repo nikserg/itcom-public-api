@@ -173,4 +173,12 @@ class IndividualRequestClient extends BaseClient
     {
         return parent::baseRequestData($this->requestId);
     }
+
+    /**
+     * @see \nikserg\ItcomPublicApi\BaseClient::baseRequest()
+     */
+    public function request(string $content, string $containerInfo): void
+    {
+        parent::baseRequest($this->requestId, $content, $containerInfo);
+    }
 }

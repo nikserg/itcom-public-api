@@ -55,6 +55,7 @@ abstract class BaseClient
     private const URI_UPLOAD = 'certificate/upload'; //Загрузить сканы документов
     private const URI_DOCUMENT = 'certificate/document'; //Скачать ранее загруженный скан документа
     private const URI_REQUEST_DATA = 'certificate/requestData'; //Данные для формирования req-файла
+    private const URI_REQUEST = 'certificate/request'; //Загрузить req-файл
 
     protected Client $guzzleClient;
 
@@ -268,6 +269,48 @@ abstract class BaseClient
                         'id' => $id,
                     ],
                     'json'        => $fields,
+                    'http_errors' => false,
+                ]));
+            $responseContent = (string)($response->getBody());
+        } catch (ClientException $exception) {
+            if ($exception->getCode() == 404) {
+                throw new NotFoundException($id);
+            }
+            throw $exception;
+        }
+        $decodedResponseContent = self::jsonDecode($responseContent, true);
+        $responseCode = new Code($decodedResponseContent);
+        $this->checkResponseCode($responseCode);
+    }
+
+    /**
+     * Отправка req-файла
+     *
+     *
+     * @param int    $id
+     * @param string $content
+     * @param string $containerInfo
+     * @return void
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \nikserg\ItcomPublicApi\exceptions\InvalidJsonException
+     * @throws \nikserg\ItcomPublicApi\exceptions\NotFoundException
+     * @throws \nikserg\ItcomPublicApi\exceptions\PublicApiException
+     * @throws \nikserg\ItcomPublicApi\exceptions\PublicApiMalformedRequestException
+     * @throws \nikserg\ItcomPublicApi\exceptions\PublicApiMalformedRequestValidationException
+     * @throws \nikserg\ItcomPublicApi\exceptions\WrongCodeException
+     */
+    protected function baseRequest(int $id, string $content, string $containerInfo): void
+    {
+        try {
+            $response = $this->checkError($this->guzzleClient->post(self::URI_REQUEST,
+                [
+                    'query'       => [
+                        'id' => $id,
+                    ],
+                    'json'        => [
+                        'content'       => $content,
+                        'containerInfo' => $containerInfo,
+                    ],
                     'http_errors' => false,
                 ]));
             $responseContent = (string)($response->getBody());
