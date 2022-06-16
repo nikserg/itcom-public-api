@@ -82,7 +82,7 @@ class MockUserClient extends UserClient
             return $this->certificates[$id];
         }
         $json = '{
-    "id": '.$id.',
+    "id": ' . $id . ',
     "platforms": [
         "EPGU"
     ],
@@ -367,7 +367,7 @@ class MockUserClient extends UserClient
         bool $isForeigner = false,
         bool $isMep = false
     ): Certificate {
-        if (!$id) {
+        if ($id === null) {
             $id = $this->currentId++;
         }
 
