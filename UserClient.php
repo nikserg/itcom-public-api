@@ -83,12 +83,19 @@ class UserClient extends BaseClient
         return parent::baseRequestData($id);
     }
 
-
     /**
      * @see \nikserg\ItcomPublicApi\BaseClient::baseRequest()
      */
     public function request(int $id, string $content, string $containerInfo): void
     {
         parent::baseRequest($id, $content, $containerInfo);
+    }
+
+    /**
+     * @see \nikserg\ItcomPublicApi\BaseClient::baseRevert()
+     */
+    public function revert(int $id): void
+    {
+        parent::baseRevert($id);
     }
 }

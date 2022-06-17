@@ -181,4 +181,12 @@ class IndividualRequestClient extends BaseClient
     {
         parent::baseRequest($this->requestId, $content, $containerInfo);
     }
+
+    /**
+     * @see \nikserg\ItcomPublicApi\BaseClient::baseRevert()
+     */
+    public function revert(): void
+    {
+        parent::baseRevert($this->requestId);
+    }
 }

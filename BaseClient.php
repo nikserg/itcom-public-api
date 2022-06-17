@@ -56,6 +56,7 @@ abstract class BaseClient
     private const URI_DOCUMENT = 'certificate/document'; //Скачать ранее загруженный скан документа
     private const URI_REQUEST_DATA = 'certificate/requestData'; //Данные для формирования req-файла
     private const URI_REQUEST = 'certificate/request'; //Загрузить req-файл
+    private const URI_REVERT = 'certificate/revert'; //Откатить заявку
 
     protected Client $guzzleClient;
 
@@ -284,6 +285,42 @@ abstract class BaseClient
     }
 
     /**
+     * Откатить заявку
+     *
+     *
+     * @param int $id
+     * @return void
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \nikserg\ItcomPublicApi\exceptions\InvalidJsonException
+     * @throws \nikserg\ItcomPublicApi\exceptions\NotFoundException
+     * @throws \nikserg\ItcomPublicApi\exceptions\PublicApiException
+     * @throws \nikserg\ItcomPublicApi\exceptions\PublicApiMalformedRequestException
+     * @throws \nikserg\ItcomPublicApi\exceptions\PublicApiMalformedRequestValidationException
+     * @throws \nikserg\ItcomPublicApi\exceptions\WrongCodeException
+     */
+    protected function baseRevert(int $id): void
+    {
+        try {
+            $response = $this->checkError($this->guzzleClient->get(self::URI_REVERT,
+                [
+                    'query'       => [
+                        'id' => $id,
+                    ],
+                    'http_errors' => false,
+                ]));
+            $responseContent = (string)($response->getBody());
+        } catch (ClientException $exception) {
+            if ($exception->getCode() == 404) {
+                throw new NotFoundException($id);
+            }
+            throw $exception;
+        }
+        $decodedResponseContent = self::jsonDecode($responseContent, true);
+        $responseCode = new Code($decodedResponseContent);
+        $this->checkResponseCode($responseCode);
+    }
+
+    /**
      * Отправка req-файла
      *
      *
@@ -353,7 +390,6 @@ abstract class BaseClient
             throw $exception;
         }
     }
-
 
     /**
      * @param string $json
