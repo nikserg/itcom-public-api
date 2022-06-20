@@ -14,6 +14,7 @@ class Document
     public const ID_ADDITIONAL = 'additional'; //Прочие (при необходимости)
     public const ID_UNION = 'union'; //Заявление на выпуск сертификата
     public const ID_CERT_REQUEST = 'cert_request'; //Запрос на выдачу сертификата ключа проверки электронной подписи
+    public const ID_CERTIFICATE_BLANK = 'certificateblank'; //Бланк выпущенного сертификата
 
     /**
      * Идентификатор документа

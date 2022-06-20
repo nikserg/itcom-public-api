@@ -83,10 +83,12 @@ abstract class BaseClient
      * Загрузка скана документа
      *
      *
-     * @param int    $id
-     * @param string $documentId
-     * @param string $binaryDocumentContent
+     * @param int    $id ID заявки
+     * @param string $documentId ID документа
+     * @param string $binaryDocumentContent Содержимое файла
+     * @param string $fileExtension Расширение файла
      * @return void
+     * @see \nikserg\ItcomPublicApi\models\Document
      * @throws \GuzzleHttp\Exception\GuzzleException
      * @throws \nikserg\ItcomPublicApi\exceptions\InvalidJsonException
      * @throws \nikserg\ItcomPublicApi\exceptions\NotFoundException
@@ -95,7 +97,7 @@ abstract class BaseClient
      * @throws \nikserg\ItcomPublicApi\exceptions\PublicApiMalformedRequestValidationException
      * @throws \nikserg\ItcomPublicApi\exceptions\WrongCodeException
      */
-    protected function baseUpload(int $id, string $documentId, string $binaryDocumentContent): void
+    protected function baseUpload(int $id, string $documentId, string $binaryDocumentContent, string $fileExtension): void
     {
         try {
             $response = $this->checkError($this->guzzleClient->request('POST', self::URI_UPLOAD, [
@@ -107,7 +109,7 @@ abstract class BaseClient
                     [
                         'name'     => 'file',
                         'contents' => $binaryDocumentContent,
-                        'filename' => 'file',
+                        'filename' => $documentId.'.'.$fileExtension,
                     ],
                 ],
             ]));

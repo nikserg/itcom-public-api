@@ -221,4 +221,37 @@ class Certificate extends Response
     {
         return $this->id . '_' . $this->getToken();
     }
+
+    /**
+     * Загружен ли документ
+     *
+     * @param string $documentId
+     * @return bool
+     * @see Document
+     */
+    public function isDocumentUploaded(string $documentId): bool
+    {
+        if ($document = $this->getDocumentById($documentId)) {
+            return $document->uploaded;
+        }
+
+        return false;
+    }
+
+    /**
+     * Получить документ по ID
+     *
+     *
+     * @param string $documentId
+     * @return \nikserg\ItcomPublicApi\models\Document|null
+     */
+    public function getDocumentById(string $documentId): ?Document
+    {
+        foreach ($this->documents as $document) {
+            if ($document->id == $documentId) {
+                return $document;
+            }
+        }
+        return null;
+    }
 }

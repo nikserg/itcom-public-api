@@ -62,9 +62,9 @@ class UserClient extends BaseClient
     /**
      * @see \nikserg\ItcomPublicApi\BaseClient::baseUpload()
      */
-    public function upload(int $id, string $documentId, string $binaryDocumentContent): void
+    public function upload(int $id, string $documentId, string $binaryDocumentContent, string $fileExtension): void
     {
-        parent::baseUpload($id, $documentId, $binaryDocumentContent);
+        parent::baseUpload($id, $documentId, $binaryDocumentContent, $fileExtension);
     }
 
     /**

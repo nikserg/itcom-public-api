@@ -153,9 +153,9 @@ class IndividualRequestClient extends BaseClient
     /**
      * @see \nikserg\ItcomPublicApi\BaseClient::baseUpload()
      */
-    public function upload(string $documentId, string $binaryDocumentContent): void
+    public function upload(string $documentId, string $binaryDocumentContent, string $fileExtension): void
     {
-        parent::baseUpload($this->getRequestId(), $documentId, $binaryDocumentContent);
+        parent::baseUpload($this->getRequestId(), $documentId, $binaryDocumentContent, $fileExtension);
     }
 
     /**
