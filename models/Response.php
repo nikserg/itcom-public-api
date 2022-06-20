@@ -2,8 +2,6 @@
 
 namespace nikserg\ItcomPublicApi\models;
 
-use nikserg\ItcomPublicApi\models\request\FillStatus;
-
 /**
  * Ответ от CRM
  *
