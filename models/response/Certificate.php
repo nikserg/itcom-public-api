@@ -136,6 +136,12 @@ class Certificate extends Response
      * @var bool
      */
     public bool $isNewProcess;
+    /**
+     * Второй новый процесс выпуска сертификатов
+     *
+     * @var bool
+     */
+    public bool $isNewProcess2;
 
     /**
      * Криптопровайдер, который используется при генерации подписи
@@ -179,6 +185,7 @@ class Certificate extends Response
         $responseContent['status'] = new Status($responseContent['status']);
         $responseContent['isForeigner'] = boolval($responseContent['isForeigner'] ?? false);
         $responseContent['isNewProcess'] = boolval($responseContent['isNewProcess'] ?? false);
+        $responseContent['isNewProcess2'] = boolval($responseContent['isNewProcess2'] ?? false);
 
         foreach ($responseContent['fields'] as $key => $value) {
             $responseContent['fields'][$key] = new Field($value);
