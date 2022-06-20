@@ -34,7 +34,7 @@ use Psr\Http\Message\ResponseInterface;
  *
  * Документация:
  *
- * @see https://app.swaggerhub.com/apis/nikserg/crm-certificate-api/1.0.16
+ * @see https://app.swaggerhub.com/apis/nikserg/crm-certificate-api
  */
 abstract class BaseClient
 {
@@ -57,6 +57,7 @@ abstract class BaseClient
     private const URI_REQUEST_DATA = 'certificate/requestData'; //Данные для формирования req-файла
     private const URI_REQUEST = 'certificate/request'; //Загрузить req-файл
     private const URI_REVERT = 'certificate/revert'; //Откатить заявку
+    private const URI_REQUEST_VERIFICATION = 'certificate/requestVerification'; //Запросить проверку документов
 
     protected Client $guzzleClient;
 
@@ -73,6 +74,7 @@ abstract class BaseClient
             'headers'  => [
                 'Authorization' => 'Bearer ' . $bearerToken,
             ],
+            'http_errors' => false,
         ]);
     }
 
@@ -270,7 +272,6 @@ abstract class BaseClient
                         'id' => $id,
                     ],
                     'json'        => $fields,
-                    'http_errors' => false,
                 ]));
             $responseContent = (string)($response->getBody());
         } catch (ClientException $exception) {
@@ -306,7 +307,6 @@ abstract class BaseClient
                     'query'       => [
                         'id' => $id,
                     ],
-                    'http_errors' => false,
                 ]));
             $responseContent = (string)($response->getBody());
         } catch (ClientException $exception) {
@@ -348,7 +348,40 @@ abstract class BaseClient
                         'content'       => $content,
                         'containerInfo' => $containerInfo,
                     ],
-                    'http_errors' => false,
+                ]));
+            $responseContent = (string)($response->getBody());
+        } catch (ClientException $exception) {
+            if ($exception->getCode() == 404) {
+                throw new NotFoundException($id);
+            }
+            throw $exception;
+        }
+        $decodedResponseContent = self::jsonDecode($responseContent, true);
+        $responseCode = new Code($decodedResponseContent);
+        $this->checkResponseCode($responseCode);
+    }
+
+    /**
+     * Запросить проверку документов
+     *
+     *
+     * @param int $id
+     * @return void
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \nikserg\ItcomPublicApi\exceptions\InvalidJsonException
+     * @throws \nikserg\ItcomPublicApi\exceptions\NotFoundException
+     * @throws \nikserg\ItcomPublicApi\exceptions\PublicApiException
+     * @throws \nikserg\ItcomPublicApi\exceptions\PublicApiMalformedRequestException
+     * @throws \nikserg\ItcomPublicApi\exceptions\PublicApiMalformedRequestValidationException
+     * @throws \nikserg\ItcomPublicApi\exceptions\WrongCodeException
+     */
+    protected function baseRequestVerification(int $id):void {
+        try {
+            $response = $this->checkError($this->guzzleClient->post(self::URI_REQUEST_VERIFICATION,
+                [
+                    'query'       => [
+                        'id' => $id,
+                    ],
                 ]));
             $responseContent = (string)($response->getBody());
         } catch (ClientException $exception) {
@@ -391,7 +424,8 @@ abstract class BaseClient
         }
     }
 
-    /**
+
+        /**
      * @param string $json
      * @param bool   $asAssoc
      * @return array|bool|float|int|object|string|null
@@ -452,5 +486,4 @@ abstract class BaseClient
             throw new WrongCodeException($code);
         }
     }
-
 }

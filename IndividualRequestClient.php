@@ -189,4 +189,11 @@ class IndividualRequestClient extends BaseClient
     {
         parent::baseRevert($this->requestId);
     }
+    /**
+     * @see \nikserg\ItcomPublicApi\BaseClient::baseRequestVerification()
+     */
+    public function requestVerification(): void
+    {
+        parent::baseRequestVerification($this->requestId);
+    }
 }

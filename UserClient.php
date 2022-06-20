@@ -98,4 +98,12 @@ class UserClient extends BaseClient
     {
         parent::baseRevert($id);
     }
+
+    /**
+     * @see \nikserg\ItcomPublicApi\BaseClient::baseRequestVerification()
+     */
+    public function requestVerification(int $id): void
+    {
+        parent::baseRequestVerification($id);
+    }
 }
