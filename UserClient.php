@@ -106,4 +106,12 @@ class UserClient extends BaseClient
     {
         parent::baseRequestVerification($id);
     }
+
+    /**
+     * @see \nikserg\ItcomPublicApi\BaseClient::baseCrt()
+     */
+    public function crt(int $id): string
+    {
+        return parent::baseCrt($id);
+    }
 }

@@ -58,6 +58,7 @@ abstract class BaseClient
     private const URI_REQUEST = 'certificate/request'; //Загрузить req-файл
     private const URI_REVERT = 'certificate/revert'; //Откатить заявку
     private const URI_REQUEST_VERIFICATION = 'certificate/requestVerification'; //Запросить проверку документов
+    private const URI_GET_CRT = 'certificate/certificate'; //Скачать crt-файл выпущенного сертификата
 
     protected Client $guzzleClient;
 
@@ -70,8 +71,8 @@ abstract class BaseClient
     {
         $this->guzzleClient = new Client([
             //'debug'    => 1,
-            'base_uri' => $host . '/app/index.php/publicApi/',
-            'headers'  => [
+            'base_uri'    => $host . '/app/index.php/publicApi/',
+            'headers'     => [
                 'Authorization' => 'Bearer ' . $bearerToken,
             ],
             'http_errors' => false,
@@ -88,7 +89,6 @@ abstract class BaseClient
      * @param string $binaryDocumentContent Содержимое файла
      * @param string $fileExtension Расширение файла
      * @return void
-     * @see \nikserg\ItcomPublicApi\models\Document
      * @throws \GuzzleHttp\Exception\GuzzleException
      * @throws \nikserg\ItcomPublicApi\exceptions\InvalidJsonException
      * @throws \nikserg\ItcomPublicApi\exceptions\NotFoundException
@@ -96,9 +96,14 @@ abstract class BaseClient
      * @throws \nikserg\ItcomPublicApi\exceptions\PublicApiMalformedRequestException
      * @throws \nikserg\ItcomPublicApi\exceptions\PublicApiMalformedRequestValidationException
      * @throws \nikserg\ItcomPublicApi\exceptions\WrongCodeException
+     * @see \nikserg\ItcomPublicApi\models\Document
      */
-    protected function baseUpload(int $id, string $documentId, string $binaryDocumentContent, string $fileExtension): void
-    {
+    protected function baseUpload(
+        int $id,
+        string $documentId,
+        string $binaryDocumentContent,
+        string $fileExtension
+    ): void {
         try {
             $response = $this->checkError($this->guzzleClient->request('POST', self::URI_UPLOAD, [
                 'query'     => [
@@ -109,7 +114,7 @@ abstract class BaseClient
                     [
                         'name'     => 'file',
                         'contents' => $binaryDocumentContent,
-                        'filename' => $documentId.'.'.$fileExtension,
+                        'filename' => $documentId . '.' . $fileExtension,
                     ],
                 ],
             ]));
@@ -148,6 +153,25 @@ abstract class BaseClient
                 'format'   => $format,
             ],
         ])->getBody()->getContents();
+    }
+
+    /**
+     * Скачать crt-файл выпущенного сертификата
+     *
+     *
+     * @param int $id
+     * @return string
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \nikserg\ItcomPublicApi\exceptions\InvalidJsonException
+     */
+    protected function baseCrt(int $id): string
+    {
+        $json = (string)($this->guzzleClient->get(self::URI_GET_CRT, [
+            'query' => [
+                'id' => $id,
+            ],
+        ])->getBody());
+        return self::jsonDecode($json, true)['content'];
     }
 
     /**
@@ -270,10 +294,10 @@ abstract class BaseClient
         try {
             $response = $this->checkError($this->guzzleClient->post(self::URI_FILL,
                 [
-                    'query'       => [
+                    'query' => [
                         'id' => $id,
                     ],
-                    'json'        => $fields,
+                    'json'  => $fields,
                 ]));
             $responseContent = (string)($response->getBody());
         } catch (ClientException $exception) {
@@ -306,7 +330,7 @@ abstract class BaseClient
         try {
             $response = $this->checkError($this->guzzleClient->get(self::URI_REVERT,
                 [
-                    'query'       => [
+                    'query' => [
                         'id' => $id,
                     ],
                 ]));
@@ -343,10 +367,10 @@ abstract class BaseClient
         try {
             $response = $this->checkError($this->guzzleClient->post(self::URI_REQUEST,
                 [
-                    'query'       => [
+                    'query' => [
                         'id' => $id,
                     ],
-                    'json'        => [
+                    'json'  => [
                         'content'       => $content,
                         'containerInfo' => $containerInfo,
                     ],
@@ -377,11 +401,12 @@ abstract class BaseClient
      * @throws \nikserg\ItcomPublicApi\exceptions\PublicApiMalformedRequestValidationException
      * @throws \nikserg\ItcomPublicApi\exceptions\WrongCodeException
      */
-    protected function baseRequestVerification(int $id):void {
+    protected function baseRequestVerification(int $id): void
+    {
         try {
             $response = $this->checkError($this->guzzleClient->post(self::URI_REQUEST_VERIFICATION,
                 [
-                    'query'       => [
+                    'query' => [
                         'id' => $id,
                     ],
                 ]));
@@ -427,7 +452,7 @@ abstract class BaseClient
     }
 
 
-        /**
+    /**
      * @param string $json
      * @param bool   $asAssoc
      * @return array|bool|float|int|object|string|null
