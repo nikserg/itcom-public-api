@@ -17,6 +17,7 @@ class Status
     const CODE_INIT = 0; //Не заполнено
     const CODE_NEED_FIRST_DOC_PACK = 1; //Требуется загрузка первого пакета документов
     const CODE_NEED_AUTO_CHECK = 2; //Требуется автоматическая проверка СМЭВ
+    const CODE_FIRST_CHECK_DOCUMENTS = 4; // Требуется первичная проверка документов ДС
     const CODE_CALLBACK = 5; // Требуется связаться с клиентом
     const CODE_NEED_PREREQUEST = 7; //Нужно сформировать запрос на выпуск
     const CODE_FORMFILLED = 10; //Форма заполнена, документы не прикреплены
@@ -108,15 +109,16 @@ class Status
      * @var array Названия статусов
      */
     public const CODE_NAMES = [
-        self::CODE_INIT                => 'Анкета не заполнена',
-        self::CODE_NEED_FIRST_DOC_PACK => 'Требуется загрузка первого пакета документов',
-        self::CODE_NEED_AUTO_CHECK     => 'Идет автоматическая проверка СМЭВ',
-        self::CODE_NEED_PREREQUEST     => 'Требуется сформировать запрос на выпуск сертификата',
-        self::CODE_CALLBACK            => 'Требуется связаться с клиентом',
-        self::CODE_FORMFILLED          => 'Анкета заполнена',
-        self::CODE_REFILL              => 'Исправить документы',
-        self::CODE_DOCUMENTSLOADED     => 'Требуется проверка документов',
-        self::CODE_NEED_MANUAL_START   => 'Требуется оплата счета',
+        self::CODE_INIT                  => 'Анкета не заполнена',
+        self::CODE_NEED_FIRST_DOC_PACK   => 'Требуется загрузка первого пакета документов',
+        self::CODE_FIRST_CHECK_DOCUMENTS => 'Идет проверка первого пакета документов',
+        self::CODE_NEED_AUTO_CHECK       => 'Идет автоматическая проверка СМЭВ',
+        self::CODE_NEED_PREREQUEST       => 'Требуется сформировать запрос на выпуск сертификата',
+        self::CODE_CALLBACK              => 'Требуется связаться с клиентом',
+        self::CODE_FORMFILLED            => 'Анкета заполнена',
+        self::CODE_REFILL                => 'Исправить документы',
+        self::CODE_DOCUMENTSLOADED       => 'Требуется проверка документов',
+        self::CODE_NEED_MANUAL_START     => 'Требуется оплата счета',
 
         self::CODE_NEED_UNION_AND_PHOTO_RELOAD => 'Ошибка в заявлении или фотографии на выпуск',
         self::CODE_NEED_UNION                  => 'Загрузить заявление',
