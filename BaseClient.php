@@ -20,6 +20,7 @@ use nikserg\ItcomPublicApi\models\request\Platform;
 use nikserg\ItcomPublicApi\models\request\Target;
 use nikserg\ItcomPublicApi\models\response\Certificate;
 use nikserg\ItcomPublicApi\models\response\Code;
+use nikserg\ItcomPublicApi\models\response\Crt;
 use nikserg\ItcomPublicApi\models\response\RequestData;
 use Psr\Http\Message\ResponseInterface;
 
@@ -164,14 +165,15 @@ abstract class BaseClient
      * @throws \GuzzleHttp\Exception\GuzzleException
      * @throws \nikserg\ItcomPublicApi\exceptions\InvalidJsonException
      */
-    protected function baseCrt(int $id): string
+    protected function baseCrt(int $id): Crt
     {
         $json = (string)($this->guzzleClient->get(self::URI_GET_CRT, [
             'query' => [
                 'id' => $id,
             ],
         ])->getBody());
-        return self::jsonDecode($json, true)['content'];
+
+        return new Crt(self::jsonDecode($json, true));
     }
 
     /**

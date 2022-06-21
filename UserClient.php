@@ -7,6 +7,7 @@ use nikserg\ItcomPublicApi\models\request\LegalForm;
 use nikserg\ItcomPublicApi\models\request\Platform;
 use nikserg\ItcomPublicApi\models\request\Target;
 use nikserg\ItcomPublicApi\models\response\Certificate;
+use nikserg\ItcomPublicApi\models\response\Crt;
 use nikserg\ItcomPublicApi\models\response\RequestData;
 
 /**
@@ -110,7 +111,7 @@ class UserClient extends BaseClient
     /**
      * @see \nikserg\ItcomPublicApi\BaseClient::baseCrt()
      */
-    public function crt(int $id): string
+    public function crt(int $id): Crt
     {
         return parent::baseCrt($id);
     }
