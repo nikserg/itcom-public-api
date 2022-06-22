@@ -2,6 +2,7 @@
 
 namespace nikserg\ItcomPublicApi\models\response;
 
+use nikserg\ItcomPublicApi\exceptions\InvalidConstructorArrayException;
 use nikserg\ItcomPublicApi\models\Document;
 use nikserg\ItcomPublicApi\models\Field;
 use nikserg\ItcomPublicApi\models\Response;
@@ -175,13 +176,24 @@ class Certificate extends Response
     public ?string $issueDate;
 
 
+    /**
+     * @throws \nikserg\ItcomPublicApi\exceptions\InvalidConstructorArrayException
+     */
     protected function prepareResponseContent(array $responseContent): array
     {
+        if (empty($responseContent)) {
+            throw new InvalidConstructorArrayException('Передан пустой массив для создания заявки на сертификат');
+        }
         $responseContent['isGKFH'] = boolval($responseContent['isGKFH'] ?? false);
         $responseContent['isMinor'] = boolval($responseContent['isMinor'] ?? false);
         $responseContent['isMep'] = boolval($responseContent['isMep'] ?? false);
         $responseContent['isForeignCompany'] = boolval($responseContent['isForeignCompany'] ?? false);
         $responseContent['noColorScan'] = boolval($responseContent['noColorScan'] ?? false);
+
+        if (!isset($responseContent['status'])) {
+            throw new InvalidConstructorArrayException('В массиве для создания заявки на сертификат нет ключа status. Передан массив ' . print_r($responseContent,
+                    true));
+        }
         $responseContent['status'] = new Status($responseContent['status']);
         $responseContent['isForeigner'] = boolval($responseContent['isForeigner'] ?? false);
         $responseContent['isNewProcess'] = boolval($responseContent['isNewProcess'] ?? false);
@@ -252,9 +264,9 @@ class Certificate extends Response
                 return $document;
             }
         }
+
         return null;
     }
-
 
 
     /**
