@@ -254,4 +254,24 @@ class Certificate extends Response
         }
         return null;
     }
+
+
+
+    /**
+     * Получить значение поля анкеты, если оно существует (и если значение задано)
+     *
+     *
+     * @param string $fieldId ID поля
+     * @return mixed|null
+     */
+    public function getFieldValue(string $fieldId): mixed
+    {
+        foreach ($this->fields as $field) {
+            if ($field->id == $fieldId) {
+                return $field->value;
+            }
+        }
+
+        return null;
+    }
 }
