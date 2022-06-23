@@ -1,7 +1,7 @@
 <p align="center"><img src="https://uc-itcom.ru/themes/custom/itcom2/img/logo.svg" /></p>
 <p align="center"><img src="https://scrutinizer-ci.com/g/nikserg/itcom-public-api/badges/quality-score.png?b=main" />
 <img src="https://scrutinizer-ci.com/g/nikserg/itcom-public-api/badges/code-intelligence.svg?b=main" />
-<img src="http://poser.pugx.org/nikserg/itcom-public-api/require/php)](https://packagist.org/packages/nikserg/itcom-public-api" /></p>
+<img src="https://poser.pugx.org/nikserg/itcom-public-api/require/php" /></p>
 
 # Публичный API для работы с CRM Айтиком
 
