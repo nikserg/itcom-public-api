@@ -5,6 +5,8 @@ namespace nikserg\ItcomPublicApi\models\response;
 use nikserg\ItcomPublicApi\exceptions\InvalidConstructorArrayException;
 use nikserg\ItcomPublicApi\models\Document;
 use nikserg\ItcomPublicApi\models\Field;
+use nikserg\ItcomPublicApi\models\request\LegalForm;
+use nikserg\ItcomPublicApi\models\request\Target;
 use nikserg\ItcomPublicApi\models\Response;
 use nikserg\ItcomPublicApi\models\Status;
 
@@ -295,5 +297,16 @@ class Certificate extends Response
         }
 
         return null;
+    }
+
+    /**
+     * Выпуск на руководителя юридического лица или на индивидуального предпринимателя
+     *
+     *
+     * @return bool
+     */
+    public function isHeadOrIp(): bool
+    {
+        return $this->legalForm == LegalForm::INDIVIDUAL || ($this->legalForm == LegalForm::LEGAL && $this->target == Target::OWNER);
     }
 }
