@@ -175,6 +175,15 @@ class Certificate extends Response
      */
     public ?string $issueDate;
 
+    /**
+     * Выпуск через Доверенный Удостоверяющий Центр.
+     *
+     * Обычно происходит для сертификатов на руководителей организаций или ИП.
+     *
+     * @var bool
+     */
+    public bool $isDuc;
+
 
     /**
      * @throws \nikserg\ItcomPublicApi\exceptions\InvalidConstructorArrayException
@@ -187,6 +196,7 @@ class Certificate extends Response
         $responseContent['isGKFH'] = boolval($responseContent['isGKFH'] ?? false);
         $responseContent['isMinor'] = boolval($responseContent['isMinor'] ?? false);
         $responseContent['isMep'] = boolval($responseContent['isMep'] ?? false);
+        $responseContent['isDuc'] = boolval($responseContent['isDuc'] ?? false);
         $responseContent['isForeignCompany'] = boolval($responseContent['isForeignCompany'] ?? false);
         $responseContent['noColorScan'] = boolval($responseContent['noColorScan'] ?? false);
 
