@@ -13,6 +13,7 @@ use nikserg\ItcomPublicApi\exceptions\NotFoundException;
 use nikserg\ItcomPublicApi\exceptions\PublicApiException;
 use nikserg\ItcomPublicApi\exceptions\PublicApiMalformedRequestException;
 use nikserg\ItcomPublicApi\exceptions\PublicApiMalformedRequestValidationException;
+use nikserg\ItcomPublicApi\exceptions\PublicApiNotFoundException;
 use nikserg\ItcomPublicApi\exceptions\WrongCodeException;
 use nikserg\ItcomPublicApi\models\request\CryptoProvider;
 use nikserg\ItcomPublicApi\models\request\LegalForm;
@@ -488,6 +489,9 @@ abstract class BaseClient
         if (isset($json['error'])) {
             $errorClass = PublicApiException::class;
             switch ($json['error']['type']) {
+                case 'NotFoundException':
+                    $errorClass = PublicApiNotFoundException::class;
+                    break;
                 case 'PublicApiMalformedRequestException':
                     $errorClass = PublicApiMalformedRequestException::class;
                     break;

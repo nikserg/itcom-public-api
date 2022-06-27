@@ -54,6 +54,6 @@ class PublicApiException extends Exception
         $this->publicApiFile = $json['file'] ?? null;
         $this->publicApiTrace = $json['trace'] ?? null;
         $this->publicApiExceptionClass = $type;
-        parent::__construct($type . ': ' . $message, $code, $previous);
+        parent::__construct($type . ': ' . $message.'. Ошибка в CRM: '.print_r($json, true), $code, $previous);
     }
 }
