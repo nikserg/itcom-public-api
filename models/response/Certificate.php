@@ -230,9 +230,9 @@ class Certificate extends Response
     public function getToken(): string
     {
         $matches = [];
-        preg_match('/token=(.+)/', $this->link, $matches);
+        preg_match('/[a-z\d]{32}ind/', $this->link, $matches);
 
-        return $matches[1] ?? '';
+        return $matches[0] ?? '';
     }
 
     /**
