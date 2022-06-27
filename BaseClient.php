@@ -256,17 +256,21 @@ abstract class BaseClient
      *
      * @param int $id
      * @return \nikserg\ItcomPublicApi\models\response\Certificate
-     * @throws \nikserg\ItcomPublicApi\exceptions\NotFoundException|\GuzzleHttp\Exception\GuzzleException
+     * @throws \GuzzleHttp\Exception\GuzzleException
      * @throws \nikserg\ItcomPublicApi\exceptions\InvalidJsonException
+     * @throws \nikserg\ItcomPublicApi\exceptions\NotFoundException
+     * @throws \nikserg\ItcomPublicApi\exceptions\PublicApiException
+     * @throws \nikserg\ItcomPublicApi\exceptions\PublicApiMalformedRequestException
+     * @throws \nikserg\ItcomPublicApi\exceptions\PublicApiMalformedRequestValidationException
      */
     protected function baseView(int $id): Certificate
     {
         try {
-            $decodedAnswer = self::jsonDecode((string)($this->guzzleClient->get(self::URI_VIEW, [
+            $decodedAnswer = self::jsonDecode((string)($this->checkError($this->guzzleClient->get(self::URI_VIEW, [
                 'query' => [
                     'id' => $id,
                 ],
-            ])->getBody()),
+            ]))->getBody()),
                 true);
 
             return new Certificate($decodedAnswer);
