@@ -10,6 +10,7 @@ use GuzzleHttp\Psr7\Uri;
 use GuzzleHttp\Utils;
 use nikserg\ItcomPublicApi\exceptions\InvalidJsonException;
 use nikserg\ItcomPublicApi\exceptions\NotFoundException;
+use nikserg\ItcomPublicApi\exceptions\PublicApiBearerException;
 use nikserg\ItcomPublicApi\exceptions\PublicApiException;
 use nikserg\ItcomPublicApi\exceptions\PublicApiMalformedRequestException;
 use nikserg\ItcomPublicApi\exceptions\PublicApiMalformedRequestValidationException;
@@ -501,6 +502,9 @@ abstract class BaseClient
                     break;
                 case 'PublicApiMalformedRequestValidationException':
                     $errorClass = PublicApiMalformedRequestValidationException::class;
+                    break;
+                case 'PublicApiBearerException':
+                    $errorClass = PublicApiBearerException::class;
                     break;
             }
             throw new $errorClass($json['error']);
