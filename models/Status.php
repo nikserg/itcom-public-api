@@ -222,9 +222,9 @@ class Status
      * Причина отклонения заявки
      *
      *
-     * @var string
+     * @var string|null
      */
-    public string $reason;
+    public ?string $reason;
 
     public function __construct(array $array)
     {
