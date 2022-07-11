@@ -44,8 +44,8 @@ abstract class BaseClient
     //
     // Хосты систем
     //
-    public const HOST_DEV = 'https://dev.uc-itcom.ru'; //Тестовая
-    public const HOST_PROD = 'https://crm.uc-itcom.ru'; //Боевая
+    public const HOST_DEV = 'https://dev.uc-itcom.ru/app/index.php/publicApi/'; //Тестовая
+    public const HOST_PROD = 'https://crm.uc-itcom.ru/app/index.php/publicApi/'; //Боевая
 
 
     //
@@ -68,13 +68,13 @@ abstract class BaseClient
 
     /**
      * @param string $bearerToken Токен доступа пользователя системы
-     * @param string $host
+     * @param string $host Адрес системы
      */
     public function __construct(string $bearerToken, string $host = self::HOST_DEV)
     {
         $this->guzzleClient = new Client([
             //'debug'    => 1,
-            'base_uri'    => $host . '/app/index.php/publicApi/',
+            'base_uri'    => $host,
             'headers'     => [
                 'Authorization' => 'Bearer ' . $bearerToken,
             ],
