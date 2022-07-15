@@ -15,6 +15,7 @@ class Field
         __construct as protected parent_construct;
     }
 
+    public const ID_dnsName = 'dnsName';
     public const ID_organizationShortName = 'organizationShortName';
     public const ID_street = 'street';
     public const ID_departmentName = 'departmentName';
