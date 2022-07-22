@@ -122,7 +122,7 @@ class RequestData extends Response
     /**
      * @var \nikserg\ItcomPublicApi\models\response\Enrolment
      */
-    public Enrolment $enrolment;
+    public ?Enrolment $enrolment;
     /**
      * @var string
      */
@@ -138,7 +138,7 @@ class RequestData extends Response
             $responseContent['subjectFields'][$key] = new SubjectField($value);
         }
         $responseContent['keyUsage'] = new KeyUsage($responseContent['keyUsage']);
-        $responseContent['enrolment'] = new Enrolment($responseContent['enrolment']);
+        $responseContent['enrolment'] = isset($responseContent['enrolment']) ? new Enrolment($responseContent['enrolment']) : null;
 
         return $responseContent;
     }
