@@ -131,6 +131,8 @@ class RequestData extends Response
      * @var bool
      */
     public bool $isCloud;
+    
+    public ?bool $ogrnAsNumeric;
 
     protected function prepareResponseContent(array $responseContent): array
     {
