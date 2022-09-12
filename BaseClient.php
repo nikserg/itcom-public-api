@@ -504,6 +504,7 @@ abstract class BaseClient
                     $errorClass = PublicApiMalformedRequestValidationException::class;
                     break;
                 case 'PublicApiBearerException':
+                case 'CrmCoreClients\Certificates\Exceptions\RemoteException':
                     $errorClass = PublicApiBearerException::class;
                     break;
             }
