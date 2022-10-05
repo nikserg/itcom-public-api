@@ -6,7 +6,6 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\InvalidArgumentException;
 use GuzzleHttp\Exception\ServerException;
-use GuzzleHttp\Psr7\Uri;
 use GuzzleHttp\Utils;
 use nikserg\ItcomPublicApi\exceptions\InvalidJsonException;
 use nikserg\ItcomPublicApi\exceptions\NotFoundException;
@@ -14,6 +13,7 @@ use nikserg\ItcomPublicApi\exceptions\PublicApiBearerException;
 use nikserg\ItcomPublicApi\exceptions\PublicApiException;
 use nikserg\ItcomPublicApi\exceptions\PublicApiMalformedRequestException;
 use nikserg\ItcomPublicApi\exceptions\PublicApiMalformedRequestValidationException;
+use nikserg\ItcomPublicApi\exceptions\PublicApiNotFoundCertificateException;
 use nikserg\ItcomPublicApi\exceptions\PublicApiNotFoundException;
 use nikserg\ItcomPublicApi\exceptions\WrongCodeException;
 use nikserg\ItcomPublicApi\models\request\CryptoProvider;
@@ -280,6 +280,8 @@ abstract class BaseClient
                 throw new NotFoundException($id);
             }
             throw $exception;
+        } catch (PublicApiNotFoundCertificateException) {
+            throw new NotFoundException($id);
         }
     }
 
@@ -505,6 +507,9 @@ abstract class BaseClient
                     break;
                 case 'PublicApiBearerException':
                     $errorClass = PublicApiBearerException::class;
+                    break;
+                case 'CrmCoreClients\Certificates\Exceptions\NoCertificateRemoteException':
+                    $errorClass = PublicApiNotFoundCertificateException::class;
                     break;
             }
             throw new $errorClass($json['error']);
