@@ -186,6 +186,13 @@ class Certificate extends Response
      */
     public bool $isDuc;
 
+    /**
+     * ID продлеваемой заявки
+     *
+     *
+     * @var int|null
+     */
+    public ?int $prolongationId;
 
     /**
      * @throws \nikserg\ItcomPublicApi\exceptions\InvalidConstructorArrayException
