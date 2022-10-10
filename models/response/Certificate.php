@@ -35,7 +35,7 @@ class Certificate extends Response
      * Статус заявки
      *
      *
-     * @var \nikserg\ItcomPublicApi\models\Status
+     * @var Status
      */
     public Status $status;
 
@@ -43,7 +43,7 @@ class Certificate extends Response
      * Список требуемых документов
      *
      *
-     * @var \nikserg\ItcomPublicApi\models\Document[] $documents
+     * @var Document[] $documents
      */
     public array $documents;
 
@@ -51,7 +51,7 @@ class Certificate extends Response
      * Список полей анкеты
      *
      *
-     * @var \nikserg\ItcomPublicApi\models\Field[] $fields
+     * @var Field[] $fields
      */
     public array $fields;
 
@@ -195,13 +195,14 @@ class Certificate extends Response
     public ?int $prolongationId;
 
     /**
-     * @throws \nikserg\ItcomPublicApi\exceptions\InvalidConstructorArrayException
+     * @throws InvalidConstructorArrayException
      */
     protected function prepareResponseContent(array $responseContent): array
     {
         if (empty($responseContent)) {
             throw new InvalidConstructorArrayException('Передан пустой массив для создания заявки на сертификат');
         }
+        $responseContent['prolongationId'] = $responseContent['prolongationId'] ?? null;
         $responseContent['isGKFH'] = boolval($responseContent['isGKFH'] ?? false);
         $responseContent['isMinor'] = boolval($responseContent['isMinor'] ?? false);
         $responseContent['isMep'] = boolval($responseContent['isMep'] ?? false);
@@ -274,7 +275,7 @@ class Certificate extends Response
      *
      *
      * @param string $documentId
-     * @return \nikserg\ItcomPublicApi\models\Document|null
+     * @return Document|null
      */
     public function getDocumentById(string $documentId): ?Document
     {
