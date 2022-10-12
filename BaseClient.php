@@ -4,6 +4,7 @@ namespace nikserg\ItcomPublicApi;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\InvalidArgumentException;
 use GuzzleHttp\Exception\ServerException;
 use GuzzleHttp\Utils;
@@ -13,10 +14,12 @@ use nikserg\ItcomPublicApi\exceptions\PublicApiBearerException;
 use nikserg\ItcomPublicApi\exceptions\PublicApiException;
 use nikserg\ItcomPublicApi\exceptions\PublicApiMalformedRequestException;
 use nikserg\ItcomPublicApi\exceptions\PublicApiMalformedRequestValidationException;
+use nikserg\ItcomPublicApi\exceptions\PublicApiNoReqFileException;
 use nikserg\ItcomPublicApi\exceptions\PublicApiNotFoundCertificateException;
 use nikserg\ItcomPublicApi\exceptions\PublicApiNotFoundException;
 use nikserg\ItcomPublicApi\exceptions\WrongCodeException;
 use nikserg\ItcomPublicApi\models\request\CryptoProvider;
+use nikserg\ItcomPublicApi\models\request\FillRequestField;
 use nikserg\ItcomPublicApi\models\request\LegalForm;
 use nikserg\ItcomPublicApi\models\request\Platform;
 use nikserg\ItcomPublicApi\models\request\Target;
@@ -92,13 +95,13 @@ abstract class BaseClient
      * @param string $binaryDocumentContent Содержимое файла
      * @param string $fileExtension Расширение файла
      * @return void
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     * @throws \nikserg\ItcomPublicApi\exceptions\InvalidJsonException
-     * @throws \nikserg\ItcomPublicApi\exceptions\NotFoundException
-     * @throws \nikserg\ItcomPublicApi\exceptions\PublicApiException
-     * @throws \nikserg\ItcomPublicApi\exceptions\PublicApiMalformedRequestException
-     * @throws \nikserg\ItcomPublicApi\exceptions\PublicApiMalformedRequestValidationException
-     * @throws \nikserg\ItcomPublicApi\exceptions\WrongCodeException
+     * @throws GuzzleException
+     * @throws InvalidJsonException
+     * @throws NotFoundException
+     * @throws PublicApiException
+     * @throws PublicApiMalformedRequestException
+     * @throws PublicApiMalformedRequestValidationException
+     * @throws WrongCodeException
      * @see \nikserg\ItcomPublicApi\models\Document
      */
     protected function baseUpload(
@@ -144,7 +147,7 @@ abstract class BaseClient
      * @param string $blankId
      * @param string $format pdf/html
      * @return string
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws GuzzleException
      * @see \nikserg\ItcomPublicApi\models\request\Blank
      */
     protected function baseBlank(int $id, string $blankId, string $format = 'pdf'): string
@@ -161,21 +164,24 @@ abstract class BaseClient
     /**
      * Скачать crt-файл выпущенного сертификата
      *
-     *
      * @param int $id
-     * @return string
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     * @throws \nikserg\ItcomPublicApi\exceptions\InvalidJsonException
+     * @return Crt
+     * @throws InvalidJsonException
+     * @throws PublicApiException
+     * @throws PublicApiMalformedRequestException
+     * @throws PublicApiMalformedRequestValidationException
+     * @throws GuzzleException
      */
     protected function baseCrt(int $id): Crt
     {
-        $json = (string)($this->guzzleClient->get(self::URI_GET_CRT, [
+        $json = (string)($this->checkError($this->guzzleClient->get(self::URI_GET_CRT, [
             'query' => [
                 'id' => $id,
             ],
-        ])->getBody());
+        ]))->getBody());
 
-        return new Crt(self::jsonDecode($json, true));
+        $decoded = self::jsonDecode($json, true);
+        return new Crt($decoded);
     }
 
     /**
@@ -191,9 +197,9 @@ abstract class BaseClient
      * @param bool        $embeddedCp
      * @param bool        $isForeigner
      * @param bool        $isMep
-     * @return \nikserg\ItcomPublicApi\models\response\Certificate
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     * @throws \nikserg\ItcomPublicApi\exceptions\InvalidJsonException
+     * @return Certificate
+     * @throws GuzzleException
+     * @throws InvalidJsonException
      */
     protected function baseCreateOrUpdate(
         array $platforms = [Platform::EPGU],
@@ -230,8 +236,8 @@ abstract class BaseClient
      * @param int    $id
      * @param string $documentId
      * @return string
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     * @throws \nikserg\ItcomPublicApi\exceptions\NotFoundException
+     * @throws GuzzleException
+     * @throws NotFoundException
      */
     protected function baseDocument(int $id, string $documentId): string
     {
@@ -256,13 +262,13 @@ abstract class BaseClient
      *
      *
      * @param int $id
-     * @return \nikserg\ItcomPublicApi\models\response\Certificate
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     * @throws \nikserg\ItcomPublicApi\exceptions\InvalidJsonException
-     * @throws \nikserg\ItcomPublicApi\exceptions\NotFoundException
-     * @throws \nikserg\ItcomPublicApi\exceptions\PublicApiException
-     * @throws \nikserg\ItcomPublicApi\exceptions\PublicApiMalformedRequestException
-     * @throws \nikserg\ItcomPublicApi\exceptions\PublicApiMalformedRequestValidationException
+     * @return Certificate
+     * @throws GuzzleException
+     * @throws InvalidJsonException
+     * @throws NotFoundException
+     * @throws PublicApiException
+     * @throws PublicApiMalformedRequestException
+     * @throws PublicApiMalformedRequestValidationException
      */
     protected function baseView(int $id): Certificate
     {
@@ -289,15 +295,15 @@ abstract class BaseClient
      * Заполнить анкету заявки на сертификат
      *
      * @param int                                                       $id
-     * @param \nikserg\ItcomPublicApi\models\request\FillRequestField[] $fields
+     * @param FillRequestField[] $fields
      * @return void
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     * @throws \nikserg\ItcomPublicApi\exceptions\InvalidJsonException
-     * @throws \nikserg\ItcomPublicApi\exceptions\NotFoundException
-     * @throws \nikserg\ItcomPublicApi\exceptions\PublicApiException
-     * @throws \nikserg\ItcomPublicApi\exceptions\PublicApiMalformedRequestException
-     * @throws \nikserg\ItcomPublicApi\exceptions\PublicApiMalformedRequestValidationException
-     * @throws \nikserg\ItcomPublicApi\exceptions\WrongCodeException
+     * @throws GuzzleException
+     * @throws InvalidJsonException
+     * @throws NotFoundException
+     * @throws PublicApiException
+     * @throws PublicApiMalformedRequestException
+     * @throws PublicApiMalformedRequestValidationException
+     * @throws WrongCodeException
      */
     protected function baseFill(int $id, array $fields): void
     {
@@ -327,13 +333,13 @@ abstract class BaseClient
      *
      * @param int $id
      * @return void
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     * @throws \nikserg\ItcomPublicApi\exceptions\InvalidJsonException
-     * @throws \nikserg\ItcomPublicApi\exceptions\NotFoundException
-     * @throws \nikserg\ItcomPublicApi\exceptions\PublicApiException
-     * @throws \nikserg\ItcomPublicApi\exceptions\PublicApiMalformedRequestException
-     * @throws \nikserg\ItcomPublicApi\exceptions\PublicApiMalformedRequestValidationException
-     * @throws \nikserg\ItcomPublicApi\exceptions\WrongCodeException
+     * @throws GuzzleException
+     * @throws InvalidJsonException
+     * @throws NotFoundException
+     * @throws PublicApiException
+     * @throws PublicApiMalformedRequestException
+     * @throws PublicApiMalformedRequestValidationException
+     * @throws WrongCodeException
      */
     protected function baseRevert(int $id): void
     {
@@ -364,13 +370,13 @@ abstract class BaseClient
      * @param string $content
      * @param string $containerInfo
      * @return void
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     * @throws \nikserg\ItcomPublicApi\exceptions\InvalidJsonException
-     * @throws \nikserg\ItcomPublicApi\exceptions\NotFoundException
-     * @throws \nikserg\ItcomPublicApi\exceptions\PublicApiException
-     * @throws \nikserg\ItcomPublicApi\exceptions\PublicApiMalformedRequestException
-     * @throws \nikserg\ItcomPublicApi\exceptions\PublicApiMalformedRequestValidationException
-     * @throws \nikserg\ItcomPublicApi\exceptions\WrongCodeException
+     * @throws GuzzleException
+     * @throws InvalidJsonException
+     * @throws NotFoundException
+     * @throws PublicApiException
+     * @throws PublicApiMalformedRequestException
+     * @throws PublicApiMalformedRequestValidationException
+     * @throws WrongCodeException
      */
     protected function baseRequest(int $id, string $content, string $containerInfo): void
     {
@@ -403,13 +409,13 @@ abstract class BaseClient
      *
      * @param int $id
      * @return void
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     * @throws \nikserg\ItcomPublicApi\exceptions\InvalidJsonException
-     * @throws \nikserg\ItcomPublicApi\exceptions\NotFoundException
-     * @throws \nikserg\ItcomPublicApi\exceptions\PublicApiException
-     * @throws \nikserg\ItcomPublicApi\exceptions\PublicApiMalformedRequestException
-     * @throws \nikserg\ItcomPublicApi\exceptions\PublicApiMalformedRequestValidationException
-     * @throws \nikserg\ItcomPublicApi\exceptions\WrongCodeException
+     * @throws GuzzleException
+     * @throws InvalidJsonException
+     * @throws NotFoundException
+     * @throws PublicApiException
+     * @throws PublicApiMalformedRequestException
+     * @throws PublicApiMalformedRequestValidationException
+     * @throws WrongCodeException
      */
     protected function baseRequestVerification(int $id): void
     {
@@ -437,10 +443,10 @@ abstract class BaseClient
      *
      *
      * @param int $id
-     * @return \nikserg\ItcomPublicApi\models\response\RequestData
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     * @throws \nikserg\ItcomPublicApi\exceptions\InvalidJsonException
-     * @throws \nikserg\ItcomPublicApi\exceptions\NotFoundException
+     * @return RequestData
+     * @throws GuzzleException
+     * @throws InvalidJsonException
+     * @throws NotFoundException
      */
     protected function baseRequestData(int $id): RequestData
     {
@@ -466,7 +472,7 @@ abstract class BaseClient
      * @param string $json
      * @param bool   $asAssoc
      * @return array|bool|float|int|object|string|null
-     * @throws \nikserg\ItcomPublicApi\exceptions\InvalidJsonException
+     * @throws InvalidJsonException
      */
     protected static function jsonDecode(string $json, bool $asAssoc = false)
     {
@@ -484,10 +490,10 @@ abstract class BaseClient
      * Проверить json-ответ от API и выбросить исключения, если в нем есть ошибочный код
      *
      *
-     * @throws \nikserg\ItcomPublicApi\exceptions\PublicApiMalformedRequestException
-     * @throws \nikserg\ItcomPublicApi\exceptions\PublicApiMalformedRequestValidationException
-     * @throws \nikserg\ItcomPublicApi\exceptions\PublicApiException
-     * @throws \nikserg\ItcomPublicApi\exceptions\InvalidJsonException
+     * @throws PublicApiMalformedRequestException
+     * @throws PublicApiMalformedRequestValidationException
+     * @throws PublicApiException
+     * @throws InvalidJsonException
      */
     protected function checkError(ResponseInterface $response): ResponseInterface
     {
@@ -496,6 +502,9 @@ abstract class BaseClient
         if (isset($json['error'])) {
             $errorClass = PublicApiException::class;
             switch ($json['error']['type']) {
+                case 'CustomerFormNoReqFileException':
+                    $errorClass = PublicApiNoReqFileException::class;
+                    break;
                 case 'NotFoundException':
                     $errorClass = PublicApiNotFoundException::class;
                     break;
@@ -522,9 +531,9 @@ abstract class BaseClient
      * Проверить возвращенный код и выбросить исключение, если он не успешный
      *
      *
-     * @param \nikserg\ItcomPublicApi\models\response\Code $code
+     * @param Code $code
      * @return void
-     * @throws \nikserg\ItcomPublicApi\exceptions\WrongCodeException
+     * @throws WrongCodeException
      */
     protected function checkResponseCode(Code $code): void
     {
