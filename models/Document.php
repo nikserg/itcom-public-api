@@ -15,6 +15,9 @@ class Document
     public const ID_UNION = 'union'; //Заявление на выпуск сертификата
     public const ID_CERT_REQUEST = 'cert_request'; //Запрос на выдачу сертификата ключа проверки электронной подписи
     public const ID_CERTIFICATE_BLANK = 'certificateblank'; //Бланк выпущенного сертификата
+    public const ID_SNILS = 'snils'; //СНИЛС
+    public const ID_PASSPORT_PHONO = 'passportphoto'; //Страница паспорта с фото
+    public const ID_PASSPORT_REGISTRATION = 'passportregistration'; //Страница паспорта с регистрацией
 
     /**
      * Идентификатор документа
