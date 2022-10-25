@@ -37,7 +37,7 @@ class IndividualRequestClient extends BaseClient
      *
      * @param string $token
      * @param string $host
-     * @return \nikserg\ItcomPublicApi\IndividualRequestClient
+     * @return IndividualRequestClient
      */
     public static function fromCombinedToken(string $token, string $host = self::HOST_DEV): IndividualRequestClient
     {
@@ -49,9 +49,9 @@ class IndividualRequestClient extends BaseClient
      * Новый клиент из заявки на сертификат
      *
      *
-     * @param \nikserg\ItcomPublicApi\models\response\Certificate $certificate
-     * @param string                                              $host
-     * @return \nikserg\ItcomPublicApi\IndividualRequestClient
+     * @param Certificate $certificate
+     * @param string      $host
+     * @return IndividualRequestClient
      */
     public static function fromCertificate(
         Certificate $certificate,
@@ -146,7 +146,7 @@ class IndividualRequestClient extends BaseClient
      *
      * @see \nikserg\ItcomPublicApi\BaseClient::baseBlank()
      */
-    public function blank(string $blankId, string $format = 'pdf'): string
+    public function blank(array|string $blankId, string $format = 'pdf'): string
     {
         return parent::baseBlank($this->getRequestId(), $blankId, $format);
     }

@@ -143,15 +143,18 @@ abstract class BaseClient
      * Скачать бланк сертификата
      *
      *
-     * @param int    $id
-     * @param string $blankId
-     * @param string $format pdf/html
+     * @param int          $id
+     * @param array|string $blankId ID бланка или массив с этими ID
+     * @param string       $format pdf/html
      * @return string
      * @throws GuzzleException
      * @see \nikserg\ItcomPublicApi\models\request\Blank
      */
-    protected function baseBlank(int $id, string $blankId, string $format = 'pdf'): string
+    protected function baseBlank(int $id, array|string $blankId, string $format = 'pdf'): string
     {
+        if (is_array($blankId)) {
+            $blankId = implode(',', $blankId);
+        }
         return $this->guzzleClient->get(self::URI_BLANK, [
             'query' => [
                 'id'       => $id,
