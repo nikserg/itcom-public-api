@@ -317,4 +317,14 @@ class Certificate extends Response
     {
         return $this->legalForm == LegalForm::INDIVIDUAL || ($this->legalForm == LegalForm::LEGAL && $this->target == Target::OWNER);
     }
+
+    /**
+     * Продление ключ ключом?
+     *
+     * @return bool
+     */
+    public function isKeyProlongation(): bool
+    {
+        return in_array('EPGU_DUC_KEY_PROLONGATION', $this->platforms);
+    }
 }
