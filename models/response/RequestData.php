@@ -2,6 +2,7 @@
 
 namespace nikserg\ItcomPublicApi\models\response;
 
+use nikserg\ItcomPublicApi\exceptions\InvalidJsonException;
 use nikserg\ItcomPublicApi\models\Document;
 use nikserg\ItcomPublicApi\models\Field;
 use nikserg\ItcomPublicApi\models\Response;
@@ -98,11 +99,11 @@ class RequestData extends Response
      */
     public bool $exportableKey;
     /**
-     * @var \nikserg\ItcomPublicApi\models\response\SubjectField[]
+     * @var SubjectField[]
      */
     public array $subjectFields;
     /**
-     * @var \nikserg\ItcomPublicApi\models\response\KeyUsage
+     * @var KeyUsage
      */
     public KeyUsage $keyUsage;
 
@@ -120,7 +121,7 @@ class RequestData extends Response
      */
     public string $subjectSignTool;
     /**
-     * @var \nikserg\ItcomPublicApi\models\response\Enrolment
+     * @var Enrolment
      */
     public ?Enrolment $enrolment;
     /**
@@ -131,10 +132,18 @@ class RequestData extends Response
      * @var bool
      */
     public bool $isCloud;
-    
 
+
+    /**
+     * @param array $responseContent
+     * @return array
+     * @throws InvalidJsonException
+     */
     protected function prepareResponseContent(array $responseContent): array
     {
+        if (!isset($responseContent['subjectFields'])) {
+            throw new InvalidJsonException('Не найдено поле subjectFields при разборе данных для формирования req-файла в ответе ' . print_r($responseContent, true));
+        }
         foreach ($responseContent['subjectFields'] as $key => $value) {
             $responseContent['subjectFields'][$key] = new SubjectField($value);
         }
