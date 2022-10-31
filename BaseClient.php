@@ -17,6 +17,7 @@ use nikserg\ItcomPublicApi\exceptions\PublicApiMalformedRequestValidationExcepti
 use nikserg\ItcomPublicApi\exceptions\PublicApiNoReqFileException;
 use nikserg\ItcomPublicApi\exceptions\PublicApiNotFoundCertificateException;
 use nikserg\ItcomPublicApi\exceptions\PublicApiNotFoundException;
+use nikserg\ItcomPublicApi\exceptions\PublicApiRemoteException;
 use nikserg\ItcomPublicApi\exceptions\WrongCodeException;
 use nikserg\ItcomPublicApi\models\request\CryptoProvider;
 use nikserg\ItcomPublicApi\models\request\FillRequestField;
@@ -454,11 +455,12 @@ abstract class BaseClient
     protected function baseRequestData(int $id): RequestData
     {
         try {
-            $decodedAnswer = self::jsonDecode((string)($this->guzzleClient->get(self::URI_REQUEST_DATA, [
+            $response = $this->checkError($this->guzzleClient->get(self::URI_REQUEST_DATA, [
                 'query' => [
                     'id' => $id,
                 ],
-            ])->getBody()),
+            ]));
+            $decodedAnswer = self::jsonDecode((string)($response->getBody()),
                 true);
 
             return new RequestData($decodedAnswer);
@@ -522,6 +524,9 @@ abstract class BaseClient
                     break;
                 case 'CrmCoreClients\Certificates\Exceptions\NoCertificateRemoteException':
                     $errorClass = PublicApiNotFoundCertificateException::class;
+                    break;
+                case 'CrmCoreClients\Certificates\Exceptions\RemoteException':
+                    $errorClass = PublicApiRemoteException::class;
                     break;
             }
             throw new $errorClass($json['error']);
