@@ -21,6 +21,7 @@ class Status
     const CODE_CALLBACK = 5; // Требуется связаться с клиентом
     const CODE_NEED_PREREQUEST = 7; //Нужно сформировать запрос на выпуск
     const CODE_FORMFILLED = 10; //Форма заполнена, документы не прикреплены
+    const CODE_NEED_REVOCATION_BLANK = 15; //Требуется подписать бланк отзыва сертификата
     const CODE_CERTIFICATE_REQUEST_DECLINED = 19; //Запрос сертификата отклонен
     const CODE_REFILL = 20; //Необходимо повторно заполнить форму
     const CODE_DOCUMENTSLOADED = 30; //Заполнено, не проверено
@@ -116,6 +117,7 @@ class Status
         self::CODE_NEED_PREREQUEST       => 'Требуется сформировать запрос на выпуск сертификата',
         self::CODE_CALLBACK              => 'Требуется связаться с клиентом',
         self::CODE_FORMFILLED            => 'Анкета заполнена',
+        self::CODE_NEED_REVOCATION_BLANK => 'Требуется подписать бланк отзыва сертификата',
         self::CODE_REFILL                => 'Исправить документы',
         self::CODE_DOCUMENTSLOADED       => 'Требуется проверка документов',
         self::CODE_NEED_MANUAL_START     => 'Требуется оплата счета',
