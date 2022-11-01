@@ -54,6 +54,7 @@ class Field
     public const ID_headMiddleName = 'headMiddleName';
     public const ID_safeEgrulOwner = 'safeEgrulOwner';
     public const ID_headPosition = 'headPosition';
+    public const ID_REVOCATION_CERTIFICATE_SERIAL_NUMBER = 'revocation_certificate_serial_number';
 
     public const VALUE_GENDER_MALE = 1;
     public const VALUE_GENDER_FEMALE = 2;
