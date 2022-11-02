@@ -39,8 +39,9 @@ class Status
     const CODE_SEND_INVITATION = 42; // Отправить приглашение
     const CODE_AWAITING_CLIENT = 43; //Ожидается клиент
     const CODE_CLIENT_VISITED = 44; //Клиент предоставил оригиналы
-
     const CODE_LAUNCH = 45; //Выпуск сертификата одобрен
+
+    const CODE_OPERATOR_MODERATION = 47; //Требуется проверка документов оператором
 
     const CODE_USER_REQUEST = 50; //Отправлен запрос пользователя
     const CODE_USER_CREATED = 60; //Пользователь создан
@@ -134,6 +135,7 @@ class Status
         self::CODE_CLIENT_VISITED           => 'Клиент предоставил оригиналы',
         self::CODE_LAUNCH                   => 'Выпуск сертификата одобрен',
 
+        self::CODE_OPERATOR_MODERATION => 'Требуется проверка документов оператором',
 
         self::CODE_USER_REQUEST => 'Запрос на создание пользователя отправлен',
         self::CODE_USER_CREATED => 'Пользователь в ЦР создан',
