@@ -41,7 +41,9 @@ class Field
     public const ID_ownerINN = 'ownerINN';
     public const ID_INN = 'INN';
     public const ID_INNFL = 'INNFL';
+    public const ID_INNIP = 'INNIP';
     public const ID_OGRN = 'OGRN';
+    public const ID_OGRNIP = 'OGRNIP';
     public const ID_KPP = 'KPP';
     public const ID_authorityDocumentType = 'authorityDocumentType';
     public const ID_authorityDocumentNumber = 'authorityDocumentNumber';
@@ -53,7 +55,11 @@ class Field
     public const ID_headFirstName = 'headFirstName';
     public const ID_headMiddleName = 'headMiddleName';
     public const ID_safeEgrulOwner = 'safeEgrulOwner';
+    public const ID_ipAfter2017 = 'ipAfter2017';
     public const ID_headPosition = 'headPosition';
+    public const ID_ipAuthorityDate = 'ipAuthorityDate';
+    public const ID_ipAuthoritySeries = 'ipAuthoritySeries';
+    public const ID_ipAuthorityNumber = 'ipAuthorityNumber';
     public const ID_REVOCATION_CERTIFICATE_SERIAL_NUMBER = 'revocation_certificate_serial_number';
 
     public const VALUE_GENDER_MALE = 1;
@@ -107,7 +113,7 @@ class Field
      * Группа полей заявки
      *
      *
-     * @var \nikserg\ItcomPublicApi\models\FieldGroup|null
+     * @var FieldGroup|null
      */
     public ?FieldGroup $group;
 
