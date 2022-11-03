@@ -25,6 +25,9 @@ class Status
     const CODE_CERTIFICATE_REQUEST_DECLINED = 19; //Запрос сертификата отклонен
     const CODE_REFILL = 20; //Необходимо повторно заполнить форму
     const CODE_DOCUMENTSLOADED = 30; //Заполнено, не проверено
+
+    const CODE_OPERATOR_MODERATION = 32; //Требуется проверка документов оператором
+
     const CODE_NEED_MANUAL_START = 35; //Требуется одобрение выпуска
 
     const CODE_NEED_UNION_AND_PHOTO_RELOAD = 36; // Ошибка в заявление или фотографии на выпуск
@@ -40,8 +43,6 @@ class Status
     const CODE_AWAITING_CLIENT = 43; //Ожидается клиент
     const CODE_CLIENT_VISITED = 44; //Клиент предоставил оригиналы
     const CODE_LAUNCH = 45; //Выпуск сертификата одобрен
-
-    const CODE_OPERATOR_MODERATION = 47; //Требуется проверка документов оператором
 
     const CODE_USER_REQUEST = 50; //Отправлен запрос пользователя
     const CODE_USER_CREATED = 60; //Пользователь создан
@@ -121,6 +122,9 @@ class Status
         self::CODE_NEED_REVOCATION_BLANK => 'Требуется подписать бланк отзыва сертификата',
         self::CODE_REFILL                => 'Исправить документы',
         self::CODE_DOCUMENTSLOADED       => 'Требуется проверка документов',
+
+        self::CODE_OPERATOR_MODERATION => 'Требуется проверка документов оператором',
+
         self::CODE_NEED_MANUAL_START     => 'Требуется оплата счета',
 
         self::CODE_NEED_UNION_AND_PHOTO_RELOAD => 'Ошибка в заявлении или фотографии на выпуск',
@@ -134,8 +138,6 @@ class Status
         self::CODE_AWAITING_CLIENT          => 'Ожидается клиент',
         self::CODE_CLIENT_VISITED           => 'Клиент предоставил оригиналы',
         self::CODE_LAUNCH                   => 'Выпуск сертификата одобрен',
-
-        self::CODE_OPERATOR_MODERATION => 'Требуется проверка документов оператором',
 
         self::CODE_USER_REQUEST => 'Запрос на создание пользователя отправлен',
         self::CODE_USER_CREATED => 'Пользователь в ЦР создан',
