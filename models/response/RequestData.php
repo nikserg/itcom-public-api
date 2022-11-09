@@ -3,10 +3,7 @@
 namespace nikserg\ItcomPublicApi\models\response;
 
 use nikserg\ItcomPublicApi\exceptions\InvalidJsonException;
-use nikserg\ItcomPublicApi\models\Document;
-use nikserg\ItcomPublicApi\models\Field;
 use nikserg\ItcomPublicApi\models\Response;
-use nikserg\ItcomPublicApi\models\Status;
 
 /**
  * Данные для создания req-файла
@@ -86,22 +83,27 @@ class RequestData extends Response
      * @var int
      */
     public int $customerFormId;
+    
     /**
      * @var string
      */
     public string $cryptoProvider;
+
     /**
      * @var int
      */
     public int $uc;
+
     /**
      * @var bool
      */
     public bool $exportableKey;
+
     /**
      * @var SubjectField[]
      */
     public array $subjectFields;
+
     /**
      * @var KeyUsage
      */
@@ -116,23 +118,26 @@ class RequestData extends Response
      * @var int
      */
     public int $identificationKind;
+
     /**
      * @var string
      */
     public string $subjectSignTool;
+
     /**
      * @var Enrolment
      */
     public ?Enrolment $enrolment;
+
     /**
-     * @var string
+     * @var ?string
      */
-    public string $certificateTemplate;
+    public ?string $certificateTemplate;
+
     /**
      * @var bool
      */
     public bool $isCloud;
-
 
     /**
      * @param array $responseContent
