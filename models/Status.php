@@ -17,8 +17,9 @@ class Status
     const CODE_INIT = 0; //Не заполнено
     const CODE_NEED_FIRST_DOC_PACK = 1; //Требуется загрузка первого пакета документов
     const CODE_NEED_AUTO_CHECK = 2; //Требуется автоматическая проверка СМЭВ
-    const CODE_FIRST_CHECK_DOCUMENTS = 4; // Требуется первичная проверка документов ДС
+    const CODE_FIRST_CHECK_DOCUMENTS = 4; //Требуется первичная проверка документов ДС
     const CODE_CALLBACK = 5; // Требуется связаться с клиентом
+    const CODE_FORMATION_APPLICATION_BLANK = 6; //Формирование бланка заявления
     const CODE_NEED_PREREQUEST = 7; //Нужно сформировать запрос на выпуск
     const CODE_FORMFILLED = 10; //Форма заполнена, документы не прикреплены
     const CODE_NEED_REVOCATION_BLANK = 15; //Требуется подписать бланк отзыва сертификата
@@ -26,11 +27,11 @@ class Status
     const CODE_REFILL = 20; //Необходимо повторно заполнить форму
     const CODE_DOCUMENTSLOADED = 30; //Заполнено, не проверено
 
-    const CODE_OPERATOR_MODERATION = 32; //Требуется проверка документов оператором
+    const CODE_NEED_OPERATOR_MODERATION = 32; //Требуется проверка документов оператором
 
     const CODE_NEED_MANUAL_START = 35; //Требуется одобрение выпуска
 
-    const CODE_NEED_UNION_AND_PHOTO_RELOAD = 36; // Ошибка в заявление или фотографии на выпуск
+    const CODE_NEED_UNION_AND_PHOTO_RELOAD = 36; //Ошибка в заявление или фотографии на выпуск
     const CODE_NEED_UNION = 37; //Требуется загрузка заявления на выпуск сертификата
     const CODE_NEED_UNION_RELOAD = 38; //Ошибка в заявлении
     const CODE_UNION_LOADED = 39; //Заявление загружено
@@ -112,28 +113,29 @@ class Status
      * @var array Названия статусов
      */
     public const CODE_NAMES = [
-        self::CODE_INIT                  => 'Анкета не заполнена',
-        self::CODE_NEED_FIRST_DOC_PACK   => 'Требуется загрузка первого пакета документов',
+        self::CODE_INIT => 'Анкета не заполнена',
+        self::CODE_NEED_FIRST_DOC_PACK => 'Требуется загрузка первого пакета документов',
         self::CODE_FIRST_CHECK_DOCUMENTS => 'Идет проверка первого пакета документов',
-        self::CODE_NEED_AUTO_CHECK       => 'Идет автоматическая проверка СМЭВ',
-        self::CODE_NEED_PREREQUEST       => 'Требуется сформировать запрос на выпуск сертификата',
-        self::CODE_CALLBACK              => 'Требуется связаться с клиентом',
-        self::CODE_FORMFILLED            => 'Анкета заполнена',
+        self::CODE_NEED_AUTO_CHECK => 'Идет автоматическая проверка СМЭВ',
+        self::CODE_FORMATION_APPLICATION_BLANK => 'Формирование бланка заявления',
+        self::CODE_NEED_PREREQUEST => 'Требуется сформировать запрос на выпуск сертификата',
+        self::CODE_CALLBACK => 'Требуется связаться с клиентом',
+        self::CODE_FORMFILLED => 'Анкета заполнена',
         self::CODE_NEED_REVOCATION_BLANK => 'Требуется подписать бланк отзыва сертификата',
-        self::CODE_REFILL                => 'Исправить документы',
-        self::CODE_DOCUMENTSLOADED       => 'Требуется проверка документов',
+        self::CODE_REFILL => 'Исправить документы',
+        self::CODE_DOCUMENTSLOADED => 'Требуется проверка документов',
 
-        self::CODE_OPERATOR_MODERATION => 'Требуется проверка документов оператором',
+        self::CODE_NEED_OPERATOR_MODERATION => 'Требуется проверка документов оператором',
 
-        self::CODE_NEED_MANUAL_START     => 'Требуется оплата счета',
+        self::CODE_NEED_MANUAL_START => 'Требуется оплата счета',
 
         self::CODE_NEED_UNION_AND_PHOTO_RELOAD => 'Ошибка в заявлении или фотографии на выпуск',
-        self::CODE_NEED_UNION                  => 'Загрузить заявление',
-        self::CODE_NEED_UNION_RELOAD           => 'Исправить заявление',
-        self::CODE_UNION_LOADED                => 'Требуется проверка заявления',
+        self::CODE_NEED_UNION => 'Загрузить заявление',
+        self::CODE_NEED_UNION_RELOAD => 'Исправить заявление',
+        self::CODE_UNION_LOADED => 'Требуется проверка заявления',
 
         self::CODE_AWAIT_SENDING_TO_PARTNER => 'Готов к отправке партнеру',
-        self::CODE_VERIFIED                 => 'Документы и анкета проверены',
+        self::CODE_VERIFIED => 'Документы и анкета проверены',
         self::CODE_SEND_INVITATION          => 'Отправка приглашения клиенту',
         self::CODE_AWAITING_CLIENT          => 'Ожидается клиент',
         self::CODE_CLIENT_VISITED           => 'Клиент предоставил оригиналы',
