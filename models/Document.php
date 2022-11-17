@@ -23,6 +23,7 @@ class Document
     public const ID_ADDITIONAL = 'additional'; //Прочие (при необходимости)
     public const ID_OSNOVANIE_ZIP = 'osnovaniezip'; //Архив документов для api Основание
     public const ID_OSNOVANIE_ZIP_SIGN = 'osnovaniezipsign'; //Открепленная подпись архива документов для api Основание
+    public const ID_SAFETY_POLICY = 'safetypolicy'; //Памятка по безопасности
 
     /**
      * Идентификатор документа
