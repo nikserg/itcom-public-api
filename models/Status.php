@@ -54,6 +54,8 @@ class Status
     const CODE_CERTIFICATE_SIGNED_REQUEST_FORMED = 100; //Сформирован подписанный запрос сертификата
     const CODE_CERTIFICATE_SIGNED_REQUEST_SENDED = 110; //Отправлен подписанный запрос сертификата
 
+    const CODE_NEED_CERTIFICATE_BLANK = 112; //Требуется подписать бланк выпущенного сертификата
+    const CODE_NEED_SAFETY_POLICY = 113; //Требуется подписать памятку по безопасности
 
     const CODE_AWAITING_BLANK = 115; //Ожидание загрузки бланка сертификата
     const CODE_AWAITING_BLANK_RESEND = 116; //Ожидание исправления бланка сертификата
@@ -145,17 +147,20 @@ class Status
         self::CODE_USER_CREATED => 'Пользователь в ЦР создан',
 
         self::CODE_CERTIFICATE_REQUEST_DECLINED => 'Запрос отклонен',
-        self::CODE_CERTIFICATE_REQUEST_FORMED   => 'Запрос на выдачу сертификата сформирован',
-        self::CODE_CERTIFICATE_REQUEST_SENDED   => 'Запрос на выдачу сертификата отправлен',
+        self::CODE_CERTIFICATE_REQUEST_FORMED => 'Запрос на выдачу сертификата сформирован',
+        self::CODE_CERTIFICATE_REQUEST_SENDED => 'Запрос на выдачу сертификата отправлен',
 
-        self::CODE_CERTIFICATE_PAUSED     => 'Сертификат приостановлен',
-        self::CODE_CERTIFICATE_EXPIRED    => 'Сертификат просрочен',
-        self::CODE_CERTIFICATE_REVOKED    => 'Сертификат отозван',
+        self::CODE_CERTIFICATE_PAUSED => 'Сертификат приостановлен',
+        self::CODE_CERTIFICATE_EXPIRED => 'Сертификат просрочен',
+        self::CODE_CERTIFICATE_REVOKED => 'Сертификат отозван',
         self::CODE_CERTIFICATE_KEYEXPIRED => 'Ключ сертификата просрочен',
 
-        self::CODE_AWAITING_BLANK                  => 'Ожидание загрузки бланка',
-        self::CODE_AWAITING_BLANK_RESEND           => 'Ожидание исправленного бланка',
-        self::CODE_AWAITING_BLANK_ITK_CONFIRM      => 'Ожидание подтверждения бланка со стороны УЦ',
+        self::CODE_NEED_CERTIFICATE_BLANK => 'Требуется подписать бланк выпущенного сертификата',
+        self::CODE_NEED_SAFETY_POLICY => 'Требуется подписать памятку по безопасности',
+
+        self::CODE_AWAITING_BLANK => 'Ожидание загрузки бланка',
+        self::CODE_AWAITING_BLANK_RESEND => 'Ожидание исправленного бланка',
+        self::CODE_AWAITING_BLANK_ITK_CONFIRM => 'Ожидание подтверждения бланка со стороны УЦ',
         self::CODE_AWAITING_BLANK_TRANSFER_CONFIRM => 'Ожидание подтверждения бланка со стороны партнера-трансфера',
 
 

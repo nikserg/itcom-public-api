@@ -12,4 +12,5 @@ class Blank
     public const CERT_REQUEST = 'cert_request'; //Запрос на выдачу сертификата ключа проверки электронной подписи (можно скачать, если файл запроса уже есть)
     public const CERT_BLANK = 'certificateblank'; //Бланк сертификата (можно скачать только если сертификат уже выпущен)
     public const REVOCATION = 'revocationcertificateblank'; //Бланк отзыва сертификата (можно скачать только если сертификат уже выпущен)
+    public const SAFETY_POLICY = 'safetypolicy'; //Памятка по безопасности
 }
