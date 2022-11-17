@@ -195,6 +195,14 @@ class Certificate extends Response
     public ?int $prolongationId;
 
     /**
+     * ID владельца заявки
+     *
+     *
+     * @var int|null
+     */
+    public ?int $ownerId;
+
+    /**
      * @throws InvalidConstructorArrayException
      */
     protected function prepareResponseContent(array $responseContent): array
@@ -202,6 +210,7 @@ class Certificate extends Response
         if (empty($responseContent)) {
             throw new InvalidConstructorArrayException('Передан пустой массив для создания заявки на сертификат');
         }
+        $responseContent['ownerId'] = $responseContent['ownerId'] ?? null;
         $responseContent['prolongationId'] = $responseContent['prolongationId'] ?? null;
         $responseContent['isGKFH'] = boolval($responseContent['isGKFH'] ?? false);
         $responseContent['isMinor'] = boolval($responseContent['isMinor'] ?? false);
