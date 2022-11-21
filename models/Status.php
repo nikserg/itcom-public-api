@@ -33,6 +33,7 @@ class Status
 
     const CODE_NEED_UNION_AND_PHOTO_RELOAD = 36; //Ошибка в заявление или фотографии на выпуск
     const CODE_NEED_UNION = 37; //Требуется загрузка заявления на выпуск сертификата
+    const CODE_NEED_UNION_HEAD_SIGN = 34; //Требуется подписание заявления руководителем организации
     const CODE_NEED_UNION_RELOAD = 38; //Ошибка в заявлении
     const CODE_UNION_LOADED = 39; //Заявление загружено
 
@@ -133,15 +134,16 @@ class Status
 
         self::CODE_NEED_UNION_AND_PHOTO_RELOAD => 'Ошибка в заявлении или фотографии на выпуск',
         self::CODE_NEED_UNION => 'Загрузить заявление',
+        self::CODE_NEED_UNION_HEAD_SIGN => 'Требуется подписание заявления руководителем организации',
         self::CODE_NEED_UNION_RELOAD => 'Исправить заявление',
         self::CODE_UNION_LOADED => 'Требуется проверка заявления',
 
         self::CODE_AWAIT_SENDING_TO_PARTNER => 'Готов к отправке партнеру',
         self::CODE_VERIFIED => 'Документы и анкета проверены',
-        self::CODE_SEND_INVITATION          => 'Отправка приглашения клиенту',
-        self::CODE_AWAITING_CLIENT          => 'Ожидается клиент',
-        self::CODE_CLIENT_VISITED           => 'Клиент предоставил оригиналы',
-        self::CODE_LAUNCH                   => 'Выпуск сертификата одобрен',
+        self::CODE_SEND_INVITATION => 'Отправка приглашения клиенту',
+        self::CODE_AWAITING_CLIENT => 'Ожидается клиент',
+        self::CODE_CLIENT_VISITED => 'Клиент предоставил оригиналы',
+        self::CODE_LAUNCH => 'Выпуск сертификата одобрен',
 
         self::CODE_USER_REQUEST => 'Запрос на создание пользователя отправлен',
         self::CODE_USER_CREATED => 'Пользователь в ЦР создан',
