@@ -317,6 +317,17 @@ class Certificate extends Response
     }
 
     /**
+     * ИП?
+     *
+     *
+     * @return bool
+     */
+    public function isIp(): bool
+    {
+        return $this->legalForm == LegalForm::INDIVIDUAL;
+    }
+
+    /**
      * Выпуск на руководителя юридического лица или на индивидуального предпринимателя
      *
      *
@@ -324,7 +335,7 @@ class Certificate extends Response
      */
     public function isHeadOrIp(): bool
     {
-        return $this->legalForm == LegalForm::INDIVIDUAL || ($this->legalForm == LegalForm::LEGAL && $this->target == Target::OWNER);
+        return $this->isIp() || ($this->legalForm == LegalForm::LEGAL && $this->target == Target::OWNER);
     }
 
     /**
