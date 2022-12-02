@@ -21,6 +21,7 @@ class Status
     const CODE_CALLBACK = 5; // Требуется связаться с клиентом
     const CODE_FORMATION_APPLICATION_BLANK = 6; //Формирование бланка заявления
     const CODE_NEED_PREREQUEST = 7; //Нужно сформировать запрос на выпуск
+    const CODE_AWAIT_IDPOINT_SIGNATURE = 8; //Ожидание создания подписи в приложении IDPoint
     const CODE_FORMFILLED = 10; //Форма заполнена, документы не прикреплены
     const CODE_NEED_REVOCATION_BLANK = 15; //Требуется подписать бланк отзыва сертификата
     const CODE_CERTIFICATE_REQUEST_DECLINED = 19; //Запрос сертификата отклонен
