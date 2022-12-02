@@ -60,6 +60,7 @@ class Field
     public const ID_ipAuthorityDate = 'ipAuthorityDate';
     public const ID_ipAuthoritySeries = 'ipAuthoritySeries';
     public const ID_ipAuthorityNumber = 'ipAuthorityNumber';
+    public const ID_postalCode = 'postalCode';
     public const ID_REVOCATION_CERTIFICATE_SERIAL_NUMBER = 'revocation_certificate_serial_number';
 
     public const VALUE_GENDER_MALE = 1;
