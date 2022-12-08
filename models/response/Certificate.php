@@ -203,6 +203,14 @@ class Certificate extends Response
     public ?int $ownerId;
 
     /**
+     * Выпуск через IDPoint
+     *
+     *
+     * @var bool
+     */
+    public bool $isIdpoint;
+
+    /**
      * @throws InvalidConstructorArrayException
      */
     protected function prepareResponseContent(array $responseContent): array
@@ -218,6 +226,7 @@ class Certificate extends Response
         $responseContent['isDuc'] = boolval($responseContent['isDuc'] ?? false);
         $responseContent['isForeignCompany'] = boolval($responseContent['isForeignCompany'] ?? false);
         $responseContent['noColorScan'] = boolval($responseContent['noColorScan'] ?? false);
+        $responseContent['isIdpoint'] = boolval($responseContent['isIdpoint'] ?? false);
 
         if (!isset($responseContent['status'])) {
             throw new InvalidConstructorArrayException('В массиве для создания заявки на сертификат нет ключа status. Передан массив ' . print_r($responseContent,
