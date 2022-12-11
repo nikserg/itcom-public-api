@@ -76,7 +76,8 @@ class RequestData extends Response
             "CpRaCertPeriod": "12",
             "CpRaCertPeriodUnits": "Months"
         },
-        "certificateTemplate": "1.2.643.2.2.46.0.8"
+        "certificateTemplate": "1.2.643.2.2.46.0.8",
+        "certificateTemplateSequence": "MAsGAykBAQIBAQIBAA=="
     }
 */
     /**
@@ -133,6 +134,11 @@ class RequestData extends Response
      * @var ?string
      */
     public ?string $certificateTemplate;
+
+    /**
+     * @var ?string
+     */
+    public ?string $certificateTemplateSequence;
 
     /**
      * @var bool
