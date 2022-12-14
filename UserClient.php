@@ -87,9 +87,9 @@ class UserClient extends BaseClient
     /**
      * @see \nikserg\ItcomPublicApi\BaseClient::baseRequest()
      */
-    public function request(int $id, string $content, string $containerInfo): void
+    public function request(int $id, string $content, string $container, ?string $containerInfo = null): void
     {
-        parent::baseRequest($id, $content, $containerInfo);
+        parent::baseRequest($id, $content, $container, $containerInfo);
     }
 
     /**
