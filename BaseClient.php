@@ -370,9 +370,10 @@ abstract class BaseClient
      * Отправка req-файла
      *
      *
-     * @param int    $id
+     * @param int $id
      * @param string $content
-     * @param string $containerInfo
+     * @param string $container
+     * @param ?string $containerInfo
      * @return void
      * @throws GuzzleException
      * @throws InvalidJsonException
@@ -382,7 +383,7 @@ abstract class BaseClient
      * @throws PublicApiMalformedRequestValidationException
      * @throws WrongCodeException
      */
-    protected function baseRequest(int $id, string $content, string $containerInfo): void
+    protected function baseRequest(int $id, string $content, string $container, ?string $containerInfo): void
     {
         try {
             $response = $this->checkError($this->guzzleClient->post(self::URI_REQUEST,
@@ -390,8 +391,9 @@ abstract class BaseClient
                     'query' => [
                         'id' => $id,
                     ],
-                    'json'  => [
-                        'content'       => $content,
+                    'json' => [
+                        'content' => $content,
+                        'container' => $container,
                         'containerInfo' => $containerInfo,
                     ],
                 ]));

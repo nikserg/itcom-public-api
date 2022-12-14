@@ -13,7 +13,6 @@ class Document
 
     public const ID_UNION = 'union'; //Заявление на выпуск сертификата
     public const ID_UNION_OSNOVANIE = 'unionosnovanie'; //Заявление на изготовление сертификата ключа проверки электронной подписи полученное по api Основание
-    public const ID_UNION_HEAD = 'unionhead'; //Заявление на изготовление сертификата ключа проверки электронной подписи, подписанное руководителем
     public const ID_REVOCATION_BLANK = 'revocationcertificateblank'; // Бланк отзыва сертификата
     public const ID_CERT_REQUEST = 'cert_request'; //Запрос на выдачу сертификата ключа проверки электронной подписи
     public const ID_CERTIFICATE_BLANK = 'certificateblank'; //Бланк выпущенного сертификата
